@@ -26,7 +26,7 @@ Summary:        New curses Libraries
 License:        MIT
 Group:          System/Base
 Url:            http://invisible-island.net/ncurses/ncurses.html
-Source0:        ncurses-%{version}.tar.bz2
+Source0:        ncurses-%{version}.tar.gz
 Source2:        handle.linux
 Source4:        ncurses-rpmlintrc
 Source6:        edit.sed
@@ -553,7 +553,6 @@ export BUILD_TIC=$PWD/../progs/tic
     install -m 644 doc/ncurses-intro.txt.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
     bzip2 doc/hackguide.doc -c > doc/hackguide.txt.bz2
     install -m 644 doc/hackguide.txt.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
-    install -m 644 %{S:3}			%{buildroot}%{_defaultdocdir}/ncurses/
     install -m 644 README			%{buildroot}%{_defaultdocdir}/ncurses/
     install -m 644 NEWS				%{buildroot}%{_defaultdocdir}/ncurses/
     mkdir -p %{buildroot}%{_sysconfdir}
@@ -586,28 +585,21 @@ export BUILD_TIC=$PWD/../progs/tic
 	%{tabset vt100}
 	%{tabset vt300}
 	%{terminfo a/ansi}
-	%{terminfo a/arpanet}
 	%{terminfo d/dumb}
-	%{terminfo d/dialup}
 	%{terminfo g/gnome}
 	%{terminfo g/gnome-rh72}
 	%{terminfo k/klone+color}
 	%{terminfo k/kvt}
-	%{terminfo k/kvt-rh}
 	%{terminfo l/linux}
 	%{terminfo l/linux-m}
 	%{terminfo l/linux-nic}
 	%{terminfo m/mlterm}
-	%{terminfo n/net}
-	%{terminfo n/network}
 	%{terminfo n/nxterm}
-	%{terminfo p/patch}
 	%{terminfo r/rxvt}
 	%{terminfo s/screen}
 	%{terminfo s/screen-w}
 	%{terminfo s/screen-256color}
 	%{terminfo s/sun}
-	%{terminfo s/switch}
 	%{terminfo u/unknown}
 	%{terminfo v/vt100}
 	%{terminfo v/vt102}
