@@ -27,19 +27,10 @@ License:        MIT
 Group:          System/Base
 Url:            http://invisible-island.net/ncurses/ncurses.html
 Source0:        ncurses-%{version}.tar.bz2
-Source1:        ncurses-%{version}-patches.tar.bz2
 Source2:        handle.linux
-Source3:        README.devel
 Source4:        ncurses-rpmlintrc
-Source5:        tack-1.07-20120303.tar.bz2
 Source6:        edit.sed
 Source7:        baselibs.conf
-Patch0:         ncurses-%{version}.dif
-Patch1:         ncurses-5.9-overflow.dif
-Patch3:         ncurses-5.9-overwrite.dif
-Patch4:         ncurses-5.7-tack.dif
-Patch5:         ncurses-5.9-environment.dif
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %global         _sysconfdir /etc
 %global         _miscdir    %{_datadir}/misc
 %global         _incdir     %{_includedir}
@@ -191,7 +182,6 @@ Summary:        Include Files and Libraries mandatory for Development
 License:        MIT
 Group:          Development/Libraries/C and C++
 Provides:       ncurses:%{_incdir}/ncurses.h
-Requires:       %{_bindir}/tack
 Requires:       ncurses = %{version}-%{release}
 %if %abi >= 6
 Requires:       libncurses6 = %{version}-%{release}
@@ -214,40 +204,9 @@ Authors:
     Zeyd M. Ben-Halim <zmbenhal@netcom.com>
     Pavel Curtis
 
-%package -n tack
-Summary:        Terminfo action checker
-License:        GPL-2.0+
-Group:          Development/Tools/Building
-Provides:       ncurses-devel:%{_bindir}/tack
-Requires:       ncurses = %{version}-%{release}
-
-%description -n tack
-This package contains the tack utility to help to build a new terminfo
-entry describing an unknown terminal. It can also be used to test the
-correctness of an existing entry, and to develop the correct pad
-timings needed to ensure that screen updates do not fall behind the
-incoming data stream.
-
-
-
-Authors:
---------
-    Daniel Weaver <danw@znyx.com>
-    Eric S. Raymond <esr@thyrsus.com>
 
 %prep
 %setup -q -n ncurses-%{version}
-rm -fr tack
-rm -f  Ada95/src/terminal_interface-curses.adb
-rm -f  mkinstalldirs
-tar Oxfj %{S:1} | patch -p1 -s
-tar  xfj %{S:5}
-mv tack-* tack
-%patch -P 1 -p0 -b .of
-%patch -P 3 -p0 -b .ow
-%patch -P 4 -p0 -b .hs
-%patch -P 5 -p0 -b .lc
-%patch -P 0 -p0 -b .p0
 rm -vf include/ncurses_dll.h
 rm -vf mkdirs.sh
 rm -vf tar-copy.sh
@@ -444,20 +403,6 @@ export BUILD_TIC=$PWD/../progs/tic
     make install DESTDIR=%{root} includedir=${inc} libdir=${lib}
     ln -sf ${inc##*/}/{curses,ncurses,term,termcap}.h %{root}${inc%%/*}/
     sh %{S:6} --cflags "-I${inc}" --libs "-lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses5-config
-    #
-    # Check for tack program on base of above ncurses
-    #
-    LD_LIBRARY_PATH=$PWD/lib
-    export LD_LIBRARY_PATH PATH
-    pushd tack/
-%if 0%{?qemu_user_space_build:1}%{?_crossbuild}
-	echo "Skipping LDD test due to running under QEMU / cross-building"
-%else
-	ldd ./tack
-%endif
-    popd
-    unset LD_LIBRARY_PATH
-    test ! -L tack || rm -f tack
 %if %abi < 6
     #
     # Now use --with-pthread for reentrant pthread support (abi > 5).
@@ -761,10 +706,6 @@ export BUILD_TIC=$PWD/../progs/tic
 %doc %{_mandir}/man3/*.gz
 %doc %{_mandir}/man7/*.gz
 
-%files -n tack
-%defattr(-,root,root)
-%{_bindir}/tack
-%doc %{_mandir}/man1/tack.1.gz
 
 %files -f extension.list -n terminfo
 %defattr(-,root,root)
