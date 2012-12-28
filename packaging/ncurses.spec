@@ -12,19 +12,20 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
 
 Name:           ncurses
+#!BuildIgnore: terminfo
+BuildRequires:  gcc-c++
 %define terminfo() %{_datadir}/%{0}/%{1}
 %define tabset()   %{_datadir}/%{0}/%{1}
 Version:        5.9
 Release:        0
-License:        MIT
 Summary:        New curses Libraries
-Url:            http://invisible-island.net/ncurses/ncurses.html
+License:        MIT
 Group:          System/Base
+Url:            http://invisible-island.net/ncurses/ncurses.html
 Source0:        ncurses-%{version}.tar.bz2
 Source1:        ncurses-%{version}-patches.tar.bz2
 Source2:        handle.linux
@@ -38,8 +39,6 @@ Patch1:         ncurses-5.9-overflow.dif
 Patch3:         ncurses-5.9-overwrite.dif
 Patch4:         ncurses-5.7-tack.dif
 Patch5:         ncurses-5.9-environment.dif
-#!BuildIgnore: terminfo
-BuildRequires:  gcc-c++
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %global         _sysconfdir /etc
 %global         _miscdir    %{_datadir}/misc
@@ -54,9 +53,19 @@ write text), ncurses is used. The panel and the forms libraries are
 included in this package. These new libraries support color, special
 characters, and panels.
 
+
+
+Authors:
+--------
+    Thomas E. Dickey <dickey@invisible-island.net>
+    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
+    Eric S. Raymond <esr@thyrsus.com>
+    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
+    Pavel Curtis
+
 %package -n ncurses-utils
-License:        MIT
 Summary:        Tools using the new curses libraries
+License:        MIT
 Group:          System/Base
 Provides:       ncurses:%{_bindir}/tput
 
@@ -75,9 +84,19 @@ tset  -- terminal-initialization utility
 
 reset -- terminal initialization utility
 
+
+
+Authors:
+--------
+    Thomas E. Dickey <dickey@invisible-island.net>
+    Eric S. Raymond <esr@thyrsus.com>
+    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
+    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
+    Pavel Curtis
+
 %package -n terminfo-base
-License:        MIT
 Summary:        A terminal descriptions database
+License:        MIT
 Group:          System/Base
 Provides:       ncurses:%{_datadir}/tabset
 
@@ -87,26 +106,43 @@ This database is the official successor to the 4.4BSD termcap file and
 contains information about any known terminal. The ncurses library
 makes use of this database to use terminals correctly.
 
+
+
+Authors:
+--------
+    Thomas E. Dickey <dickey@invisible-island.net>
+    Eric S. Raymond <esr@thyrsus.com>
+
 %if %abi == 5
 
 %package -n libncurses
-License:        MIT
 Summary:        The New curses Libraries
+License:        MIT
 Group:          System/Libraries
 Requires:       terminfo-base
-Recommends:     ncurses-utils = %{version}
 Provides:       ncurses = %{version}
 Obsoletes:      ncurses < %{version}
+Recommends:     ncurses-utils = %{version}
 
 %description -n libncurses
 The ncurses library is used by the most curses based terminal
 applications for controling its output and input to the screen.
 
+
+
+Authors:
+--------
+    Thomas E. Dickey <dickey@invisible-island.net>
+    Eric S. Raymond <esr@thyrsus.com>
+    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
+    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
+    Pavel Curtis
+
 %endif
 
 %package -n libncurses6
-License:        MIT
 Summary:        The New curses Libraries
+License:        MIT
 Group:          System/Libraries
 Requires:       terminfo-base
 %if %abi == 5
@@ -115,13 +151,23 @@ Provides:       ncurses = 6.0
 Provides:       ncurses = %{version}
 %endif
 
-%description -n libncurses6
+%description -n libncurses6 
 The ncurses library is used by the most curses based terminal
 applications for controling its output and input to the screen.
 
+
+
+Authors:
+--------
+    Thomas E. Dickey <dickey@invisible-island.net>
+    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
+    Eric S. Raymond <esr@thyrsus.com>
+    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
+    Pavel Curtis
+
 %package -n terminfo
-License:        SUSE-Public-Domain
 Summary:        A terminal descriptions database
+License:        SUSE-Public-Domain
 Group:          System/Base
 
 %description -n terminfo
@@ -133,30 +179,47 @@ just use the Linux console, xterm, and VT100, you probably will not
 need this database -- a minimal /usr/share/terminfo tree for these
 terminals is already included in the terminfo-base package.
 
+
+
+Authors:
+--------
+    Eric S. Raymond <esr@thyrsus.com>
+    Thomas E. Dickey <dickey@invisible-island.net>
+
 %package -n ncurses-devel
-License:        MIT
 Summary:        Include Files and Libraries mandatory for Development
+License:        MIT
 Group:          Development/Libraries/C and C++
-Requires:       %{_bindir}/tack
-Requires:       ncurses = %{version}
 Provides:       ncurses:%{_incdir}/ncurses.h
+Requires:       %{_bindir}/tack
+Requires:       ncurses = %{version}-%{release}
 %if %abi >= 6
-Requires:       libncurses6 = %{version}
+Requires:       libncurses6 = %{version}-%{release}
 %else
-Requires:       libncurses = %{version}
-Requires:       libncurses6 = %{version}
+Requires:       libncurses = %{version}-%{release}
+Requires:       libncurses6 = %{version}-%{release}
 %endif
 
 %description -n ncurses-devel
 This package contains all necessary include files and libraries needed
 to develop applications that require these.
 
+
+
+Authors:
+--------
+    Thomas E. Dickey <dickey@invisible-island.net>
+    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
+    Eric S. Raymond <esr@thyrsus.com>
+    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
+    Pavel Curtis
+
 %package -n tack
-License:        GPL-2.0+
 Summary:        Terminfo action checker
+License:        GPL-2.0+
 Group:          Development/Tools/Building
-Requires:       ncurses = %{version}
 Provides:       ncurses-devel:%{_bindir}/tack
+Requires:       ncurses = %{version}-%{release}
 
 %description -n tack
 This package contains the tack utility to help to build a new terminfo
@@ -165,19 +228,26 @@ correctness of an existing entry, and to develop the correct pad
 timings needed to ensure that screen updates do not fall behind the
 incoming data stream.
 
+
+
+Authors:
+--------
+    Daniel Weaver <danw@znyx.com>
+    Eric S. Raymond <esr@thyrsus.com>
+
 %prep
 %setup -q -n ncurses-%{version}
 rm -fr tack
 rm -f  Ada95/src/terminal_interface-curses.adb
 rm -f  mkinstalldirs
-tar Oxfj %{SOURCE1} | patch -p1 -s
-tar  xfj %{SOURCE5}
+tar Oxfj %{S:1} | patch -p1 -s
+tar  xfj %{S:5}
 mv tack-* tack
-%patch1 -p0 -b .of
-%patch3 -p0 -b .ow
-%patch4 -p0 -b .hs
-%patch5 -p0 -b .lc
-%patch0 -p0 -b .p0
+%patch -P 1 -p0 -b .of
+%patch -P 3 -p0 -b .ow
+%patch -P 4 -p0 -b .hs
+%patch -P 5 -p0 -b .lc
+%patch -P 0 -p0 -b .p0
 rm -vf include/ncurses_dll.h
 rm -vf mkdirs.sh
 rm -vf tar-copy.sh
@@ -216,7 +286,7 @@ rm -vf mk-dlls.sh
       FALLBK="xterm,linux,vt100,vt102"
 	  CC=gcc
 	 CXX=g++
-    CFLAGS="%{optflags} -pipe -D_REENTRANT"
+    CFLAGS="${RPM_OPT_FLAGS} -pipe -D_REENTRANT"
     if [[ "$BUILD_BASENAME" = debug-* ]] ; then
 	CFLAGS="${CFLAGS} -g -DTRACE"
     fi
@@ -373,7 +443,7 @@ export BUILD_TIC=$PWD/../progs/tic
     # must not use %jobs here (would lead to: ln: ncurses.h already exists)
     make install DESTDIR=%{root} includedir=${inc} libdir=${lib}
     ln -sf ${inc##*/}/{curses,ncurses,term,termcap}.h %{root}${inc%%/*}/
-    sh %{SOURCE6} --cflags "-I${inc}" --libs "-lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses5-config
+    sh %{S:6} --cflags "-I${inc}" --libs "-lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses5-config
     #
     # Check for tack program on base of above ncurses
     #
@@ -401,7 +471,7 @@ export BUILD_TIC=$PWD/../progs/tic
     # must not use %jobs here (would lead to: ln: ncurses.h already exists)
     make install.libs install.includes DESTDIR=%{root} includedir=${inc} libdir=${lib}
     ln -sf ${inc##*/}/{curses,ncurses,term}.h %{root}${inc%%/*}/
-    sh %{SOURCE6} --cflags "-I${inc} -I${inc%%/*}" --libs "-L${lib} -lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses6-config
+    sh %{S:6} --cflags "-I${inc} -I${inc%%/*}" --libs "-L${lib} -lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses6-config
     pushd man
 	sh ../edit_man.sh normal installing %{root}%{_mandir} . ncurses6-config.1
     popd
@@ -423,7 +493,7 @@ export BUILD_TIC=$PWD/../progs/tic
     inc=%{_incdir}/ncursesw
     # must not use %jobs here (would lead to: ln: ncurses.h already exists)
     make install.libs install.includes DESTDIR=%{root} includedir=${inc} libdir=${lib}
-    sh %{SOURCE6} --cflags "-I${inc}" --libs "-lncursesw" --libs "-ltinfo" %{root}%{_bindir}/ncursesw5-config
+    sh %{S:6} --cflags "-I${inc}" --libs "-lncursesw" --libs "-ltinfo" %{root}%{_bindir}/ncursesw5-config
     pushd man
 	sh ../edit_man.sh normal installing %{root}%{_mandir} . ncursesw5-config.1
     popd
@@ -439,7 +509,7 @@ export BUILD_TIC=$PWD/../progs/tic
     inc=%{_incdir}/ncurses6/ncursesw
     # must not use %jobs here (would lead to: ln: ncurses.h already exists)
     make install.libs install.includes DESTDIR=%{root} includedir=${inc} libdir=${lib}
-    sh %{SOURCE6} --cflags "-I${inc} -I${inc%%/*}" --libs "-L${lib} -lncursesw" --libs "-ltinfo" %{root}%{_bindir}/ncursesw6-config
+    sh %{S:6} --cflags "-I${inc} -I${inc%%/*}" --libs "-L${lib} -lncursesw" --libs "-ltinfo" %{root}%{_bindir}/ncursesw6-config
     pushd man
 	sh ../edit_man.sh normal installing %{root}%{_mandir} . ncursesw6-config.1
     popd
@@ -491,7 +561,7 @@ export BUILD_TIC=$PWD/../progs/tic
 	    libncurses*)
 		rm -f "${lnk}"
 		echo '/* GNU ld script */'		>  ${lnk}
-		echo "INPUT(${lib} AS_NEEDED(-ltinfo))"	>> ${lnk}
+		echo "INPUT(${lib} AS_NEEDED(-ltinfo))"	>> ${lnk} 
 		;;
 	    libtinfo*)
 		test -L "${lnk}" || continue
@@ -529,7 +599,7 @@ export BUILD_TIC=$PWD/../progs/tic
 	chmod a-x  %{buildroot}/%{_libdir}/ncurses6/lib*.a
     fi
 %endif
-    test -n %{buildroot} || ldconfig -N
+    test -n "%{buildroot}" || ldconfig -N
     mkdir -p %{buildroot}%{_defaultdocdir}/ncurses
     bzip2 -c misc/terminfo.src > misc/terminfo.src.bz2
     install -m 644 misc/terminfo.src.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
@@ -538,7 +608,7 @@ export BUILD_TIC=$PWD/../progs/tic
     install -m 644 doc/ncurses-intro.txt.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
     bzip2 doc/hackguide.doc -c > doc/hackguide.txt.bz2
     install -m 644 doc/hackguide.txt.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
-    install -m 644 %{SOURCE3}			%{buildroot}%{_defaultdocdir}/ncurses/
+    install -m 644 %{S:3}			%{buildroot}%{_defaultdocdir}/ncurses/
     install -m 644 README			%{buildroot}%{_defaultdocdir}/ncurses/
     install -m 644 NEWS				%{buildroot}%{_defaultdocdir}/ncurses/
     mkdir -p %{buildroot}%{_sysconfdir}
