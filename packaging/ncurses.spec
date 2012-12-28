@@ -1,0 +1,702 @@
+#
+# spec file for package ncurses
+#
+# Copyright (c) 2012 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
+Name:           ncurses
+%define terminfo() %{_datadir}/%{0}/%{1}
+%define tabset()   %{_datadir}/%{0}/%{1}
+Version:        5.9
+Release:        0
+License:        MIT
+Summary:        New curses Libraries
+Url:            http://invisible-island.net/ncurses/ncurses.html
+Group:          System/Base
+Source0:        ncurses-%{version}.tar.bz2
+Source1:        ncurses-%{version}-patches.tar.bz2
+Source2:        handle.linux
+Source3:        README.devel
+Source4:        ncurses-rpmlintrc
+Source5:        tack-1.07-20120303.tar.bz2
+Source6:        edit.sed
+Source7:        baselibs.conf
+Patch0:         ncurses-%{version}.dif
+Patch1:         ncurses-5.9-overflow.dif
+Patch3:         ncurses-5.9-overwrite.dif
+Patch4:         ncurses-5.7-tack.dif
+Patch5:         ncurses-5.9-environment.dif
+#!BuildIgnore: terminfo
+BuildRequires:  gcc-c++
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+%global         _sysconfdir /etc
+%global         _miscdir    %{_datadir}/misc
+%global         _incdir     %{_includedir}
+%global         root        %{_tmppath}/%{name}-%{version}-store
+%global         abi         %(ver=%{version}; echo ${ver%.*})
+
+%description
+As soon as a text application needs to directly control its output to
+the screen (if it wants to place the cursor at location (x,y) then
+write text), ncurses is used. The panel and the forms libraries are
+included in this package. These new libraries support color, special
+characters, and panels.
+
+%package -n ncurses-utils
+License:        MIT
+Summary:        Tools using the new curses libraries
+Group:          System/Base
+Provides:       ncurses:%{_bindir}/tput
+
+%description -n ncurses-utils
+The ncurses based utilities are as follows:
+
+clear -- emits clear-screen for current terminal
+
+tabs -- set tabs on a terminal
+
+toe   -- table of entries utility
+
+tput  -- shell-script access to terminal capabilities.
+
+tset  -- terminal-initialization utility
+
+reset -- terminal initialization utility
+
+%package -n terminfo-base
+License:        MIT
+Summary:        A terminal descriptions database
+Group:          System/Base
+Provides:       ncurses:%{_datadir}/tabset
+
+%description -n terminfo-base
+This is the terminfo basic database, maintained in the ncurses package.
+This database is the official successor to the 4.4BSD termcap file and
+contains information about any known terminal. The ncurses library
+makes use of this database to use terminals correctly.
+
+%if %abi == 5
+
+%package -n libncurses
+License:        MIT
+Summary:        The New curses Libraries
+Group:          System/Libraries
+Requires:       terminfo-base
+Recommends:     ncurses-utils = %{version}
+Provides:       ncurses = %{version}
+Obsoletes:      ncurses < %{version}
+
+%description -n libncurses
+The ncurses library is used by the most curses based terminal
+applications for controling its output and input to the screen.
+
+%endif
+
+%package -n libncurses6
+License:        MIT
+Summary:        The New curses Libraries
+Group:          System/Libraries
+Requires:       terminfo-base
+%if %abi == 5
+Provides:       ncurses = 6.0
+%else
+Provides:       ncurses = %{version}
+%endif
+
+%description -n libncurses6
+The ncurses library is used by the most curses based terminal
+applications for controling its output and input to the screen.
+
+%package -n terminfo
+License:        SUSE-Public-Domain
+Summary:        A terminal descriptions database
+Group:          System/Base
+
+%description -n terminfo
+This is the terminfo reference database, maintained in the ncurses
+package. This database is the official successor to the 4.4BSD termcap
+file and contains information about any known terminal. The ncurses
+library makes use of this database to use terminals correctly. If you
+just use the Linux console, xterm, and VT100, you probably will not
+need this database -- a minimal /usr/share/terminfo tree for these
+terminals is already included in the terminfo-base package.
+
+%package -n ncurses-devel
+License:        MIT
+Summary:        Include Files and Libraries mandatory for Development
+Group:          Development/Libraries/C and C++
+Requires:       %{_bindir}/tack
+Requires:       ncurses = %{version}
+Provides:       ncurses:%{_incdir}/ncurses.h
+%if %abi >= 6
+Requires:       libncurses6 = %{version}
+%else
+Requires:       libncurses = %{version}
+Requires:       libncurses6 = %{version}
+%endif
+
+%description -n ncurses-devel
+This package contains all necessary include files and libraries needed
+to develop applications that require these.
+
+%package -n tack
+License:        GPL-2.0+
+Summary:        Terminfo action checker
+Group:          Development/Tools/Building
+Requires:       ncurses = %{version}
+Provides:       ncurses-devel:%{_bindir}/tack
+
+%description -n tack
+This package contains the tack utility to help to build a new terminfo
+entry describing an unknown terminal. It can also be used to test the
+correctness of an existing entry, and to develop the correct pad
+timings needed to ensure that screen updates do not fall behind the
+incoming data stream.
+
+%prep
+%setup -q -n ncurses-%{version}
+rm -fr tack
+rm -f  Ada95/src/terminal_interface-curses.adb
+rm -f  mkinstalldirs
+tar Oxfj %{SOURCE1} | patch -p1 -s
+tar  xfj %{SOURCE5}
+mv tack-* tack
+%patch1 -p0 -b .of
+%patch3 -p0 -b .ow
+%patch4 -p0 -b .hs
+%patch5 -p0 -b .lc
+%patch0 -p0 -b .p0
+rm -vf include/ncurses_dll.h
+rm -vf mkdirs.sh
+rm -vf tar-copy.sh
+rm -vf mk-dlls.sh
+
+%build
+    cflags ()
+    {
+	local flag=$1; shift
+	local var=$1; shift
+	test -n "${flag}" -a -n "${var}" || return
+	case "${!var}" in
+	*${flag}*) return
+	esac
+	set -o noclobber
+	case "$flag" in
+	-Wl,*)
+	    if echo 'int main () { return 0; }' | \
+	       ${CC:-gcc} -Werror $flag -o /dev/null -xc - > /dev/null 2>&1 ; then
+		eval $var=\${$var:+\$$var\ }$flag
+	    fi
+	    ;;
+	*)
+	    if ${CC:-gcc} -Werror $flag -S -o /dev/null -xc /dev/null > /dev/null 2>&1 ; then
+		eval $var=\${$var:+\$$var\ }$flag
+	    fi
+	    if ${CXX:-g++} -Werror $flag -S -o /dev/null -xc++ /dev/null > /dev/null 2>&1 ; then
+		eval $var=\${$var:+\$$var\ }$flag
+	    fi
+	esac
+	set +o noclobber
+    }
+
+    test ! -f /.buildenv || . /.buildenv
+       OPATH=$PATH
+      FALLBK="xterm,linux,vt100,vt102"
+	  CC=gcc
+	 CXX=g++
+    CFLAGS="%{optflags} -pipe -D_REENTRANT"
+    if [[ "$BUILD_BASENAME" = debug-* ]] ; then
+	CFLAGS="${CFLAGS} -g -DTRACE"
+    fi
+    cflags -Wl,-O2                  LDFLAGS
+    cflags -Wl,-Bsymbolic-functions LDFLAGS
+    cflags -Wl,--hash-size=8599     LDFLAGS
+    cflags -Wl,--as-needed          LDFLAGS
+    CXXFLAGS=$CFLAGS
+    test -n "$TERM" || TERM=linux
+    GZIP="-9"
+    export CC CFLAGS CXX CXXFLAGS GZIP TERM LDFLAGS
+    #
+    # Detect 64bit architecures and be sure that
+    # we use an unsigned long for chtype to be
+    # backward compatible with ncurses 5.4
+    #
+    echo 'int main () { return !(sizeof(void*) >= 8); }' | gcc -x c -o test64 -
+    if ./test64 ; then
+	WITHCHTYPE="--with-chtype=long"
+    else
+	WITHCHTYPE=""
+	CFLAGS="${CFLAGS} -D_LARGEFILE64_SOURCES -D_FILE_OFFSET_BITS=64"
+    fi
+    rm -f ./test64
+    #
+    # For security of some configure and install scripts
+    #
+    TMPDIR=$(mktemp -d /tmp/ncurses.XXXXXXXX) || exit 1
+    trap 'rm -rf ${TMPDIR}' EXIT
+    export TMPDIR
+    #
+    # No --enable-term-driver as this had crashed last time
+    # in ncurses/tinfo/lib_setup.c due to the fact that
+    # _nc_globals.term_driver was a NULL function pointer
+    #
+    # No --enable-tcap-names because we may have to recompile
+    # programs or foreign programs won't work
+    #
+    # No --enable-safe-sprintf because this seems to
+    # crash on some architectures
+    #
+    # No --enable-xmc-glitch because this seems to break yast2
+    # on console/konsole (no magic cookie support on those?)
+    #
+    # No --with-termlib=tinfo because libncurses depend on
+    # libtinfo (is linked with) and therefore there is no
+    # advantage about splitting of a libtinfo (IMHO).
+    #
+    touch --reference=README config.sub config.guess
+    %configure \
+	--without-ada		\
+	--without-debug		\
+	--without-profile	\
+	--without-manpage-tbl	\
+	--with-shared		\
+	--with-normal		\
+	--with-manpage-format=gzip \
+	--with-manpage-renames=${PWD}/man/man_db.renames \
+	--with-manpage-aliases	\
+	--with-ospeed=speed_t	\
+	--with-gpm		\
+	--with-dlsym		\
+	--with-termlib=tinfo	\
+	--with-ticlib=tic	\
+	--with-xterm-kbs=del	\
+	--disable-root-environ	\
+	--disable-termcap	\
+	--disable-overwrite	\
+	--disable-rpath		\
+	--disable-leaks		\
+	--disable-xmc-glitch	\
+	--enable-symlinks	\
+	--enable-big-core	\
+	--enable-const		\
+	--enable-hashmap	\
+	--enable-no-padding	\
+	--enable-symlinks	\
+	--enable-sigwinch	\
+	--enable-colorfgbg	\
+	--enable-sp-funcs	\
+%if %abi >= 6
+	--with-pthread		\
+	--enable-reentrant	\
+	--enable-ext-mouse	\
+	--disable-widec		\
+	--enable-ext-colors	\
+%else
+	--without-pthread	\
+	--disable-reentrant	\
+	--disable-ext-mouse	\
+	--disable-widec		\
+	--disable-ext-colors	\
+%endif
+	--enable-weak-symbols	\
+	--enable-wgetch-events	\
+	--enable-pthreads-eintr	\
+	--enable-string-hacks	\
+	--prefix=%{_prefix}	\
+	--exec-prefix=%{_prefix}\
+	--libdir=%{_libdir}	\
+	--datadir=%{_datadir}	\
+	--mandir=%{_mandir}	\
+	--includedir=%{_incdir}	\
+	"${WITHCHTYPE}" 	\
+	--disable-widec		\
+	--disable-tic-depends	\
+	--with-ticlib=tic
+    #
+    #  The configure line
+    #
+    c=$(grep '^ *$ *\./configure' config.log)
+    #
+    # This is a hack to be able to boot strap
+    # a libncurses with correct fallback.c.
+    #
+    make %{?_smp_mflags} -C include
+    make %{?_smp_mflags} -C ncurses fallback.c FALLBACK_LIST=""
+    make %{?_smp_mflags} -C progs   termsort.c transform.h infocmp tic
+    rm   -f ncurses/fallback.c
+    PATH=$PWD/progs:$OPATH
+    LD_LIBRARY_PATH=$PWD/lib
+    export LD_LIBRARY_PATH PATH
+    pushd ncurses/
+	TERMINFO=$PWD/tmp
+	export TERMINFO
+	mkdir -p $TERMINFO
+%if 0%{?_crossbuild}
+export BUILD_TIC=/usr/bin/tic
+%else
+export BUILD_TIC=$PWD/../progs/tic
+%endif
+	$BUILD_TIC -I -r -e $FALLBK ../misc/terminfo.src > terminfo.src
+	$BUILD_TIC -o $TERMINFO -s terminfo.src
+	sh -e ./tinfo/MKfallback.sh $TERMINFO ../misc/terminfo.src $BUILD_TIC ${FALLBK//,/ } > fallback.c
+	rm -rf $TERMINFO
+	unset  TERMINFO
+	cp -p fallback.c ../fallback.c.backup
+    popd
+    PATH=$OPATH
+    unset LD_LIBRARY_PATH
+    #
+    # Refresh second install path
+    #
+    rm -rf %{root}
+    mkdir  %{root}
+    #
+    # Now rebuild libncurses and do the rest of this job
+    #
+    find -name fallback.o | xargs -r rm -vf
+    cp fallback.c.backup ncurses/fallback.c
+    make %{?_smp_mflags}
+    lib=%{_libdir}
+    inc=%{_incdir}/ncurses
+    # must not use %jobs here (would lead to: ln: ncurses.h already exists)
+    make install DESTDIR=%{root} includedir=${inc} libdir=${lib}
+    ln -sf ${inc##*/}/{curses,ncurses,term,termcap}.h %{root}${inc%%/*}/
+    sh %{SOURCE6} --cflags "-I${inc}" --libs "-lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses5-config
+    #
+    # Check for tack program on base of above ncurses
+    #
+    LD_LIBRARY_PATH=$PWD/lib
+    export LD_LIBRARY_PATH PATH
+    pushd tack/
+%if 0%{?qemu_user_space_build:1}%{?_crossbuild}
+	echo "Skipping LDD test due to running under QEMU / cross-building"
+%else
+	ldd ./tack
+%endif
+    popd
+    unset LD_LIBRARY_PATH
+    test ! -L tack || rm -f tack
+%if %abi < 6
+    #
+    # Now use --with-pthread for reentrant pthread support (abi > 5).
+    #
+    eval ./${c#*./} --with-pthread --enable-reentrant --enable-ext-mouse --disable-widec --disable-ext-colors --without-progs
+    find -name fallback.o | xargs -r rm -vf
+    cp fallback.c.backup ncurses/fallback.c
+    make %{?_smp_mflags}
+    lib=%{_libdir}/ncurses6
+    inc=%{_incdir}/ncurses6/ncurses
+    # must not use %jobs here (would lead to: ln: ncurses.h already exists)
+    make install.libs install.includes DESTDIR=%{root} includedir=${inc} libdir=${lib}
+    ln -sf ${inc##*/}/{curses,ncurses,term}.h %{root}${inc%%/*}/
+    sh %{SOURCE6} --cflags "-I${inc} -I${inc%%/*}" --libs "-L${lib} -lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses6-config
+    pushd man
+	sh ../edit_man.sh normal installing %{root}%{_mandir} . ncurses6-config.1
+    popd
+%endif
+    #
+    # Now use --enable-widec for UTF8/wide character support.
+    # The libs with 16 bit wide characters are binary incompatible
+    # to the normal 8bit wide character libs.
+    #
+%if %abi >= 6
+    eval ./${c#*./} --with-pthread --enable-reentrant --enable-ext-mouse --enable-widec --enable-ext-colors --without-progs
+%else
+    eval ./${c#*./} --disable-ext-mouse --enable-widec --disable-ext-colors --without-progs
+%endif
+    find -name fallback.o | xargs -r rm -vf
+    cp fallback.c.backup ncurses/fallback.c
+    make %{?_smp_mflags}
+    lib=%{_libdir}
+    inc=%{_incdir}/ncursesw
+    # must not use %jobs here (would lead to: ln: ncurses.h already exists)
+    make install.libs install.includes DESTDIR=%{root} includedir=${inc} libdir=${lib}
+    sh %{SOURCE6} --cflags "-I${inc}" --libs "-lncursesw" --libs "-ltinfo" %{root}%{_bindir}/ncursesw5-config
+    pushd man
+	sh ../edit_man.sh normal installing %{root}%{_mandir} . ncursesw5-config.1
+    popd
+%if %abi < 6
+    #
+    # Do both --enable-widec and --with-pthread (abi > 5).
+    #
+    eval ./${c#*./} --with-pthread --enable-reentrant --enable-ext-mouse --enable-widec --enable-ext-colors --without-progs
+    find -name fallback.o | xargs -r rm -vf
+    cp fallback.c.backup ncurses/fallback.c
+    make %{?_smp_mflags}
+    lib=%{_libdir}/ncurses6
+    inc=%{_incdir}/ncurses6/ncursesw
+    # must not use %jobs here (would lead to: ln: ncurses.h already exists)
+    make install.libs install.includes DESTDIR=%{root} includedir=${inc} libdir=${lib}
+    sh %{SOURCE6} --cflags "-I${inc} -I${inc%%/*}" --libs "-L${lib} -lncursesw" --libs "-ltinfo" %{root}%{_bindir}/ncursesw6-config
+    pushd man
+	sh ../edit_man.sh normal installing %{root}%{_mandir} . ncursesw6-config.1
+    popd
+%endif
+
+%install
+    GZIP="-9"
+    export GZIP
+    (cd %{root}/; tar -cpsSf - *)|tar -xpsSf - -C %{buildroot}/
+    rm -rf %{root}
+    mkdir %{buildroot}/%{_lib}
+    for model in libncurses libncursest libncursesw libncursestw libtinfo
+    do
+	for lib in %{buildroot}%{_libdir}/${model}.so.* ; do
+	    test   -e "${lib}" || continue
+	    mv "${lib}" %{buildroot}/%{_lib}/ || continue
+	done
+	for lib in %{buildroot}/%{_lib}/${model}.so.%{abi} ; do
+	    test -e "${lib}" || continue
+	    test -L "${lib}" || continue
+	    lib=${lib#%{buildroot}}
+	    lnk=%{buildroot}%{_libdir}/${model}.so
+	    case "${lib##*/}" in
+	    libncurses*)
+		rm -f ${lnk}
+		echo '/* GNU ld script */'		>  ${lnk}
+		echo "INPUT(${lib} AS_NEEDED(-ltinfo))" >> ${lnk}
+		;;
+	    *)	ln -sf ${lib} %{buildroot}%{_libdir}/${model}.so
+	    esac
+	done
+    done
+%if 0
+    lnk=%{buildroot}%{_libdir}/libtermcap.so
+    echo '/* GNU ld script */'		>  ${lnk}
+    echo "INPUT(AS_NEEDED(-ltinfo))"	>> ${lnk}
+%endif
+    chmod 0755 %{buildroot}/%{_lib}/lib*.so.*
+    chmod 0755 %{buildroot}/%{_libdir}/lib*.so.*
+    chmod a-x  %{buildroot}/%{_libdir}/lib*.a
+%if %abi < 6
+    if test -d %{buildroot}%{_libdir}/ncurses6 ; then
+	mv %{buildroot}%{_libdir}/ncurses6/*.so.6*   %{buildroot}%{_libdir}/
+	for lib in %{buildroot}%{_libdir}/ncurses6/*.so
+	do
+	    lnk=$lib
+	    lib=/%{_lib}/${lib##*/}.6
+	    case "${lib##*/}" in
+	    libncurses*)
+		rm -f "${lnk}"
+		echo '/* GNU ld script */'		>  ${lnk}
+		echo "INPUT(${lib} AS_NEEDED(-ltinfo))"	>> ${lnk}
+		;;
+	    libtinfo*)
+		test -L "${lnk}" || continue
+		ln -sf ${lib} ${lnk}
+		;;
+	    *)
+		test -L "${lnk}" || continue
+		ln -sf ../${lib##*/} ${lnk}
+	    esac
+	done
+	for model in libncurses libncursest libncursesw libncursestw libtinfo
+	do
+	    for lib in %{buildroot}%{_libdir}/${model}.so.* ; do
+		test   -e "${lib}" || continue
+		mv "${lib}" %{buildroot}/%{_lib}/ || continue
+	    done
+	    for lib in %{buildroot}/%{_lib}/${model}.so.6 ; do
+		test -e "${lib}" || continue
+		test -L "${lib}" || continue
+		lib=${lib#%{buildroot}}
+		lnk=%{buildroot}%{_libdir}/ncurses6/${model}.so
+		case "${lib##*/}" in
+		libncurses*)
+		    rm -f ${lnk}
+		    echo '/* GNU ld script */'		    >  ${lnk}
+		    echo 'SEARCH_DIR(%{_libdir}/ncurses6)'  >> ${lnk}
+		    echo "INPUT(${lib} AS_NEEDED(-ltinfo))" >> ${lnk}
+		    ;;
+		*)  ln -sf ${lib} %{buildroot}%{_libdir}/ncurses6/${model}.so
+	    esac
+	    done
+	done
+	chmod 0755 %{buildroot}/%{_lib}/lib*.so.6*
+	chmod 0755 %{buildroot}/%{_libdir}/lib*.so.6*
+	chmod a-x  %{buildroot}/%{_libdir}/ncurses6/lib*.a
+    fi
+%endif
+    test -n %{buildroot} || ldconfig -N
+    mkdir -p %{buildroot}%{_defaultdocdir}/ncurses
+    bzip2 -c misc/terminfo.src > misc/terminfo.src.bz2
+    install -m 644 misc/terminfo.src.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
+    install -m 644 doc/html/*.html		%{buildroot}%{_defaultdocdir}/ncurses/
+    bzip2 doc/ncurses-intro.doc -c > doc/ncurses-intro.txt.bz2
+    install -m 644 doc/ncurses-intro.txt.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
+    bzip2 doc/hackguide.doc -c > doc/hackguide.txt.bz2
+    install -m 644 doc/hackguide.txt.bz2	%{buildroot}%{_defaultdocdir}/ncurses/
+    install -m 644 %{SOURCE3}			%{buildroot}%{_defaultdocdir}/ncurses/
+    install -m 644 README			%{buildroot}%{_defaultdocdir}/ncurses/
+    install -m 644 NEWS				%{buildroot}%{_defaultdocdir}/ncurses/
+    mkdir -p %{buildroot}%{_sysconfdir}
+    mkdir -p %{buildroot}%{_miscdir}
+    LD_LIBRARY_PATH=$PWD/lib
+    export LD_LIBRARY_PATH
+    pushd ncurses/
+	{ echo "# See annotated version in %{_defaultdocdir}/ncurses/terminfo.src.bz2"
+%if 0%{?_crossbuild}
+	BUILD_TIC=/usr/bin/tic
+%else
+	BUILD_TIC=$PWD/../progs/tic
+%endif
+	$BUILD_TIC -C -r ../misc/terminfo.src | grep -E -v '^#'; } > termcap
+	# Gererate new termcap entries for various linux consoles
+	TERMCAP=termcap \
+	TERMINFO=%{buildroot}%{_datadir}/terminfo \
+	    bash %{SOURCE2}
+	install -m 0644 termcap.new %{buildroot}%{_miscdir}/termcap
+    popd
+    unset LD_LIBRARY_PATH
+    if test `%{_bindir}/id -u` = '0' ; then
+	chown root:root %{buildroot}%{_miscdir}/termcap
+	chmod 0644      %{buildroot}%{_miscdir}/termcap
+    fi
+    ln -sf %{_miscdir}/termcap %{buildroot}%{_sysconfdir}/termcap
+    (cat > default.list) <<-EOF
+	%{tabset std}
+	%{tabset stdcrt}
+	%{tabset vt100}
+	%{tabset vt300}
+	%{terminfo a/ansi}
+	%{terminfo a/arpanet}
+	%{terminfo d/dumb}
+	%{terminfo d/dialup}
+	%{terminfo g/gnome}
+	%{terminfo g/gnome-rh72}
+	%{terminfo k/klone+color}
+	%{terminfo k/kvt}
+	%{terminfo k/kvt-rh}
+	%{terminfo l/linux}
+	%{terminfo l/linux-m}
+	%{terminfo l/linux-nic}
+	%{terminfo m/mlterm}
+	%{terminfo n/net}
+	%{terminfo n/network}
+	%{terminfo n/nxterm}
+	%{terminfo p/patch}
+	%{terminfo r/rxvt}
+	%{terminfo s/screen}
+	%{terminfo s/screen-w}
+	%{terminfo s/screen-256color}
+	%{terminfo s/sun}
+	%{terminfo s/switch}
+	%{terminfo u/unknown}
+	%{terminfo v/vt100}
+	%{terminfo v/vt102}
+	%{terminfo v/vt220}
+	%{terminfo v/vt220-8}
+	%{terminfo v/vt220-8bit}
+	%{terminfo v/vt320}
+	%{terminfo v/vt52}
+	%{terminfo x/xterm}
+	%{terminfo x/xterm-color}
+	%{terminfo x/xterm-256color}
+	%{terminfo x/xterm-basic}
+	%{terminfo x/xterm-nic}
+	%{terminfo x/xterm-r6}
+	EOF
+    find %{buildroot}%{tabset ""} %{buildroot}%{terminfo ""} \
+	\( -type f -or -type l \) | \
+	sed "s@^%{buildroot}@@g" | \
+	grep -v -F -x -f default.list \
+	> extension.list
+    rm -f %{buildroot}%{_prefix}/lib/terminfo
+%if %abi < 6
+
+%post   -n libncurses -p /sbin/ldconfig
+
+%postun -n libncurses -p /sbin/ldconfig
+%endif
+
+%post   -n libncurses6 -p /sbin/ldconfig
+
+%postun -n libncurses6 -p /sbin/ldconfig
+
+%files -n terminfo-base -f default.list
+%defattr(-,root,root)
+%{_sysconfdir}/termcap
+%config %{_miscdir}/termcap
+%dir %{_datadir}/tabset/
+%dir %{_datadir}/terminfo/
+%dir %{_datadir}/terminfo/*/
+
+%files -n ncurses-utils
+%defattr(-,root,root)
+%{_bindir}/clear
+%{_bindir}/reset
+%{_bindir}/tabs
+%{_bindir}/toe
+%{_bindir}/tput
+%{_bindir}/tset
+%doc %{_mandir}/man1/clear.1.gz
+%doc %{_mandir}/man1/reset.1.gz
+%doc %{_mandir}/man1/tabs.1.gz
+%doc %{_mandir}/man1/toe.1.gz
+%doc %{_mandir}/man1/tput.1.gz
+%doc %{_mandir}/man1/tset.1.gz
+%doc %{_mandir}/man5/*.gz
+%if %abi == 5
+
+%files -n libncurses
+%defattr(-,root,root)
+/%{_lib}/lib*.so.5*
+%{_libdir}/lib*.so.5*
+%endif
+
+%files -n libncurses6
+%defattr(-,root,root)
+/%{_lib}/lib*.so.6*
+%{_libdir}/lib*.so.6*
+
+%files -n ncurses-devel
+%defattr(-,root,root)
+%dir %{_defaultdocdir}/ncurses/
+%doc %{_defaultdocdir}/ncurses/*
+%{_bindir}/ncurses*-config
+%{_bindir}/captoinfo
+%{_bindir}/infocmp
+%{_bindir}/infotocap
+%{_bindir}/tic
+%dir %{_incdir}/ncurses/
+%dir %{_incdir}/ncursesw/
+%dir %{_incdir}/ncurses6/
+%dir %{_incdir}/ncurses6/ncurses/
+%dir %{_incdir}/ncurses6/ncursesw/
+%{_incdir}/*.h
+%{_incdir}/ncurses*/*.h
+%{_incdir}/ncurses*/*/*.h
+%dir %{_libdir}/ncurses6/
+%{_libdir}/lib*.a
+%{_libdir}/lib*.so
+%{_libdir}/ncurses6/lib*.a
+%{_libdir}/ncurses6/lib*.so
+%doc %{_mandir}/man1/*-config.1.gz
+%doc %{_mandir}/man1/captoinfo.1.gz
+%doc %{_mandir}/man1/infocmp.1.gz
+%doc %{_mandir}/man1/infotocap.1.gz
+%doc %{_mandir}/man1/tic.1.gz
+%doc %{_mandir}/man3/*.gz
+%doc %{_mandir}/man7/*.gz
+
+%files -n tack
+%defattr(-,root,root)
+%{_bindir}/tack
+%doc %{_mandir}/man1/tack.1.gz
+
+%files -f extension.list -n terminfo
+%defattr(-,root,root)
+
+%changelog
