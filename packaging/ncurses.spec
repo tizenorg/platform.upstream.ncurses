@@ -24,7 +24,7 @@ Version:        5.9
 Release:        0
 Summary:        New curses Libraries
 License:        MIT
-Group:          System/Base
+Group:          Base/Libraries
 Url:            http://invisible-island.net/ncurses/ncurses.html
 Source0:        ncurses-%{version}.tar.gz
 Source2:        handle.linux
@@ -45,19 +45,10 @@ included in this package. These new libraries support color, special
 characters, and panels.
 
 
-
-Authors:
---------
-    Thomas E. Dickey <dickey@invisible-island.net>
-    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
-    Eric S. Raymond <esr@thyrsus.com>
-    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
-    Pavel Curtis
-
 %package -n ncurses-utils
 Summary:        Tools using the new curses libraries
 License:        MIT
-Group:          System/Base
+Group:          Base/Tools
 Provides:       ncurses:%{_bindir}/tput
 
 %description -n ncurses-utils
@@ -75,20 +66,10 @@ tset  -- terminal-initialization utility
 
 reset -- terminal initialization utility
 
-
-
-Authors:
---------
-    Thomas E. Dickey <dickey@invisible-island.net>
-    Eric S. Raymond <esr@thyrsus.com>
-    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
-    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
-    Pavel Curtis
-
 %package -n terminfo-base
 Summary:        A terminal descriptions database
 License:        MIT
-Group:          System/Base
+Group:          Base/Tools
 Provides:       ncurses:%{_datadir}/tabset
 
 %description -n terminfo-base
@@ -97,19 +78,12 @@ This database is the official successor to the 4.4BSD termcap file and
 contains information about any known terminal. The ncurses library
 makes use of this database to use terminals correctly.
 
-
-
-Authors:
---------
-    Thomas E. Dickey <dickey@invisible-island.net>
-    Eric S. Raymond <esr@thyrsus.com>
-
 %if %abi == 5
 
 %package -n libncurses
 Summary:        The New curses Libraries
 License:        MIT
-Group:          System/Libraries
+Group:          Base/Libraries
 Requires:       terminfo-base
 Provides:       ncurses = %{version}
 Obsoletes:      ncurses < %{version}
@@ -119,22 +93,12 @@ Recommends:     ncurses-utils = %{version}
 The ncurses library is used by the most curses based terminal
 applications for controling its output and input to the screen.
 
-
-
-Authors:
---------
-    Thomas E. Dickey <dickey@invisible-island.net>
-    Eric S. Raymond <esr@thyrsus.com>
-    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
-    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
-    Pavel Curtis
-
 %endif
 
 %package -n libncurses6
 Summary:        The New curses Libraries
 License:        MIT
-Group:          System/Libraries
+Group:          Base/Libraries
 Requires:       terminfo-base
 %if %abi == 5
 Provides:       ncurses = 6.0
@@ -146,20 +110,10 @@ Provides:       ncurses = %{version}
 The ncurses library is used by the most curses based terminal
 applications for controling its output and input to the screen.
 
-
-
-Authors:
---------
-    Thomas E. Dickey <dickey@invisible-island.net>
-    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
-    Eric S. Raymond <esr@thyrsus.com>
-    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
-    Pavel Curtis
-
 %package -n terminfo
 Summary:        A terminal descriptions database
-License:        SUSE-Public-Domain
-Group:          System/Base
+License:        Public-Domain
+Group:          Base/Tools
 
 %description -n terminfo
 This is the terminfo reference database, maintained in the ncurses
@@ -170,17 +124,10 @@ just use the Linux console, xterm, and VT100, you probably will not
 need this database -- a minimal /usr/share/terminfo tree for these
 terminals is already included in the terminfo-base package.
 
-
-
-Authors:
---------
-    Eric S. Raymond <esr@thyrsus.com>
-    Thomas E. Dickey <dickey@invisible-island.net>
-
 %package -n ncurses-devel
 Summary:        Include Files and Libraries mandatory for Development
 License:        MIT
-Group:          Development/Libraries/C and C++
+Group:          Development/Libraries
 Provides:       ncurses:%{_incdir}/ncurses.h
 Requires:       ncurses = %{version}-%{release}
 %if %abi >= 6
@@ -193,17 +140,6 @@ Requires:       libncurses6 = %{version}-%{release}
 %description -n ncurses-devel
 This package contains all necessary include files and libraries needed
 to develop applications that require these.
-
-
-
-Authors:
---------
-    Thomas E. Dickey <dickey@invisible-island.net>
-    Juergen Pfeifer <Juergen.Pfeifer@t-online.de>
-    Eric S. Raymond <esr@thyrsus.com>
-    Zeyd M. Ben-Halim <zmbenhal@netcom.com>
-    Pavel Curtis
-
 
 %prep
 %setup -q -n ncurses-%{version}
