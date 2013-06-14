@@ -18,6 +18,7 @@
 Name:           ncurses
 #!BuildIgnore: terminfo
 BuildRequires:  gcc-c++
+BuildRequires:  pkg-config
 %define terminfo() %{_datadir}/%{0}/%{1}
 %define tabset()   %{_datadir}/%{0}/%{1}
 Version:        5.9
@@ -48,7 +49,7 @@ characters, and panels.
 %package -n ncurses-utils
 Summary:        Tools using the new curses libraries
 License:        MIT
-Group:          Base/Tools
+Group:          Base/Utilities
 Provides:       ncurses:%{_bindir}/tput
 
 %description -n ncurses-utils
@@ -69,7 +70,7 @@ reset -- terminal initialization utility
 %package -n terminfo-base
 Summary:        A terminal descriptions database
 License:        MIT
-Group:          Base/Tools
+Group:          Base/Utilities
 Provides:       ncurses:%{_datadir}/tabset
 
 %description -n terminfo-base
@@ -113,7 +114,7 @@ applications for controling its output and input to the screen.
 %package -n terminfo
 Summary:        A terminal descriptions database
 License:        Public-Domain
-Group:          Base/Tools
+Group:          Base/Utilities
 
 %description -n terminfo
 This is the terminfo reference database, maintained in the ncurses
@@ -127,7 +128,7 @@ terminals is already included in the terminfo-base package.
 %package -n ncurses-devel
 Summary:        Include Files and Libraries mandatory for Development
 License:        MIT
-Group:          Development/Libraries
+Group:          Base/Development
 Provides:       ncurses:%{_incdir}/ncurses.h
 Requires:       ncurses = %{version}-%{release}
 %if %abi >= 6
@@ -260,6 +261,9 @@ rm -vf mk-dlls.sh
 	--enable-no-padding	\
 	--enable-symlinks	\
 	--enable-sigwinch	\
+    --enable-pc-files \
+    --with-pkg-config-libdir=%{_libdir}/pkgconfig \
+    --with-pkg-config \
 	--enable-colorfgbg	\
 	--enable-sp-funcs	\
 %if %abi >= 6
@@ -289,6 +293,7 @@ rm -vf mk-dlls.sh
 	--disable-widec		\
 	--disable-tic-depends	\
 	--with-ticlib=tic
+    #--with-pkg-config-libdir=%{_libdir}/pkgconfig \
     #
     #  The configure line
     #
@@ -401,14 +406,14 @@ export BUILD_TIC=$PWD/../progs/tic
     export GZIP
     (cd %{root}/; tar -cpsSf - *)|tar -xpsSf - -C %{buildroot}/
     rm -rf %{root}
-    mkdir %{buildroot}/%{_lib}
+    #mkdir -p %{buildroot}/%{_lib}
     for model in libncurses libncursest libncursesw libncursestw libtinfo
     do
-	for lib in %{buildroot}%{_libdir}/${model}.so.* ; do
-	    test   -e "${lib}" || continue
-	    mv "${lib}" %{buildroot}/%{_lib}/ || continue
-	done
-	for lib in %{buildroot}/%{_lib}/${model}.so.%{abi} ; do
+	#for lib in %{buildroot}%{_libdir}/${model}.so.* ; do
+	#    test   -e "${lib}" || continue
+	#    mv "${lib}" %{buildroot}/%{_lib}/ || continue
+	#done
+	for lib in %{buildroot}/%{_libdir}/${model}.so.%{abi} ; do
 	    test -e "${lib}" || continue
 	    test -L "${lib}" || continue
 	    lib=${lib#%{buildroot}}
@@ -419,7 +424,7 @@ export BUILD_TIC=$PWD/../progs/tic
 		echo '/* GNU ld script */'		>  ${lnk}
 		echo "INPUT(${lib} AS_NEEDED(-ltinfo))" >> ${lnk}
 		;;
-	    *)	ln -sf ${lib} %{buildroot}%{_libdir}/${model}.so
+	    #*)	ln -sf ${lib} %{buildroot}%{_libdir}/${model}.so
 	    esac
 	done
     done
@@ -428,7 +433,7 @@ export BUILD_TIC=$PWD/../progs/tic
     echo '/* GNU ld script */'		>  ${lnk}
     echo "INPUT(AS_NEEDED(-ltinfo))"	>> ${lnk}
 %endif
-    chmod 0755 %{buildroot}/%{_lib}/lib*.so.*
+    chmod 0755 %{buildroot}/%{_libdir}/lib*.so.*
     chmod 0755 %{buildroot}/%{_libdir}/lib*.so.*
     chmod a-x  %{buildroot}/%{_libdir}/lib*.a
 %if %abi < 6
@@ -437,7 +442,7 @@ export BUILD_TIC=$PWD/../progs/tic
 	for lib in %{buildroot}%{_libdir}/ncurses6/*.so
 	do
 	    lnk=$lib
-	    lib=/%{_lib}/${lib##*/}.6
+	    lib=/%{_libdir}/${lib##*/}.6
 	    case "${lib##*/}" in
 	    libncurses*)
 		rm -f "${lnk}"
@@ -457,9 +462,9 @@ export BUILD_TIC=$PWD/../progs/tic
 	do
 	    for lib in %{buildroot}%{_libdir}/${model}.so.* ; do
 		test   -e "${lib}" || continue
-		mv "${lib}" %{buildroot}/%{_lib}/ || continue
+		#mv "${lib}" %{buildroot}/%{_lib}/ || continue
 	    done
-	    for lib in %{buildroot}/%{_lib}/${model}.so.6 ; do
+	    for lib in %{buildroot}/%{_libdir}/${model}.so.6 ; do
 		test -e "${lib}" || continue
 		test -L "${lib}" || continue
 		lib=${lib#%{buildroot}}
@@ -471,11 +476,11 @@ export BUILD_TIC=$PWD/../progs/tic
 		    echo 'SEARCH_DIR(%{_libdir}/ncurses6)'  >> ${lnk}
 		    echo "INPUT(${lib} AS_NEEDED(-ltinfo))" >> ${lnk}
 		    ;;
-		*)  ln -sf ${lib} %{buildroot}%{_libdir}/ncurses6/${model}.so
+		*)  : #ln -sf ${lib} %{buildroot}%{_libdir}/ncurses6/${model}.so
 	    esac
 	    done
 	done
-	chmod 0755 %{buildroot}/%{_lib}/lib*.so.6*
+	chmod 0755 %{buildroot}/%{_libdir}/lib*.so.6*
 	chmod 0755 %{buildroot}/%{_libdir}/lib*.so.6*
 	chmod a-x  %{buildroot}/%{_libdir}/ncurses6/lib*.a
     fi
@@ -595,13 +600,11 @@ export BUILD_TIC=$PWD/../progs/tic
 
 %files -n libncurses
 %defattr(-,root,root)
-/%{_lib}/lib*.so.5*
 %{_libdir}/lib*.so.5*
 %endif
 
 %files -n libncurses6
 %defattr(-,root,root)
-/%{_lib}/lib*.so.6*
 %{_libdir}/lib*.so.6*
 
 %files -n ncurses-devel
@@ -624,6 +627,7 @@ export BUILD_TIC=$PWD/../progs/tic
 %dir %{_libdir}/ncurses6/
 %{_libdir}/lib*.a
 %{_libdir}/lib*.so
+%{_libdir}/pkgconfig/*.pc
 %{_libdir}/ncurses6/lib*.a
 %{_libdir}/ncurses6/lib*.so
 %doc %{_mandir}/man1/*-config.1.gz
