@@ -32,6 +32,7 @@ Source2:        handle.linux
 Source4:        ncurses-rpmlintrc
 Source6:        edit.sed
 Source7:        baselibs.conf
+Source1001: 	ncurses.manifest
 %global         _sysconfdir /etc
 %global         _miscdir    %{_datadir}/misc
 %global         _incdir     %{_includedir}
@@ -144,6 +145,7 @@ to develop applications that require these.
 
 %prep
 %setup -q -n ncurses-%{version}
+cp %{SOURCE1001} .
 rm -vf include/ncurses_dll.h
 rm -vf mkdirs.sh
 rm -vf tar-copy.sh
@@ -574,6 +576,7 @@ export BUILD_TIC=$PWD/../progs/tic
 %postun -n libncurses6 -p /sbin/ldconfig
 
 %files -n terminfo-base -f default.list
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_sysconfdir}/termcap
 %config %{_miscdir}/termcap
@@ -582,6 +585,7 @@ export BUILD_TIC=$PWD/../progs/tic
 %dir %{_datadir}/terminfo/*/
 
 %files -n ncurses-utils
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_bindir}/clear
 %{_bindir}/reset
@@ -599,15 +603,18 @@ export BUILD_TIC=$PWD/../progs/tic
 %if %abi == 5
 
 %files -n libncurses
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_libdir}/lib*.so.5*
 %endif
 
 %files -n libncurses6
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_libdir}/lib*.so.6*
 
 %files -n ncurses-devel
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %dir %{_defaultdocdir}/ncurses/
 %doc %{_defaultdocdir}/ncurses/*
@@ -640,6 +647,7 @@ export BUILD_TIC=$PWD/../progs/tic
 
 
 %files -f extension.list -n terminfo
+%manifest %{name}.manifest
 %defattr(-,root,root)
 
 %changelog
