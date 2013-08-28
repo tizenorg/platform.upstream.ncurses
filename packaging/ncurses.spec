@@ -80,7 +80,7 @@ This database is the official successor to the 4.4BSD termcap file and
 contains information about any known terminal. The ncurses library
 makes use of this database to use terminals correctly.
 
-%if %abi == 5
+%if "%abi" == "5"
 
 %package -n libncurses
 Summary:        The New curses Libraries
@@ -102,7 +102,7 @@ Summary:        The New curses Libraries
 License:        MIT
 Group:          Base/Libraries
 Requires:       terminfo-base
-%if %abi == 5
+%if "%abi" == "5"
 Provides:       ncurses = 6.0
 %else
 Provides:       ncurses = %{version}
@@ -132,7 +132,7 @@ License:        MIT
 Group:          Base/Development
 Provides:       ncurses:%{_incdir}/ncurses.h
 Requires:       ncurses = %{version}-%{release}
-%if %abi >= 6
+%if "%abi" >= "6"
 Requires:       libncurses6 = %{version}-%{release}
 %else
 Requires:       libncurses = %{version}-%{release}
@@ -268,7 +268,7 @@ rm -vf mk-dlls.sh
     --with-pkg-config \
 	--enable-colorfgbg	\
 	--enable-sp-funcs	\
-%if %abi >= 6
+%if "%abi" >= "6"
 	--with-pthread		\
 	--enable-reentrant	\
 	--enable-ext-mouse	\
@@ -346,7 +346,7 @@ export BUILD_TIC=$PWD/../progs/tic
     make install DESTDIR=%{root} includedir=${inc} libdir=${lib}
     ln -sf ${inc##*/}/{curses,ncurses,term,termcap}.h %{root}${inc%%/*}/
     sh %{S:6} --cflags "-I${inc}" --libs "-lncurses" --libs "-ltinfo" %{root}%{_bindir}/ncurses5-config
-%if %abi < 6
+%if "%abi" < "6"
     #
     # Now use --with-pthread for reentrant pthread support (abi > 5).
     #
@@ -369,7 +369,7 @@ export BUILD_TIC=$PWD/../progs/tic
     # The libs with 16 bit wide characters are binary incompatible
     # to the normal 8bit wide character libs.
     #
-%if %abi >= 6
+%if "%abi" >= "6"
     eval ./${c#*./} --with-pthread --enable-reentrant --enable-ext-mouse --enable-widec --enable-ext-colors --without-progs
 %else
     eval ./${c#*./} --disable-ext-mouse --enable-widec --disable-ext-colors --without-progs
@@ -385,7 +385,7 @@ export BUILD_TIC=$PWD/../progs/tic
     pushd man
 	sh ../edit_man.sh normal installing %{root}%{_mandir} . ncursesw5-config.1
     popd
-%if %abi < 6
+%if "%abi" < "6"
     #
     # Do both --enable-widec and --with-pthread (abi > 5).
     #
@@ -438,7 +438,7 @@ export BUILD_TIC=$PWD/../progs/tic
     chmod 0755 %{buildroot}/%{_libdir}/lib*.so.*
     chmod 0755 %{buildroot}/%{_libdir}/lib*.so.*
     chmod a-x  %{buildroot}/%{_libdir}/lib*.a
-%if %abi < 6
+%if "%abi" < "6"
     if test -d %{buildroot}%{_libdir}/ncurses6 ; then
 	mv %{buildroot}%{_libdir}/ncurses6/*.so.6*   %{buildroot}%{_libdir}/
 	for lib in %{buildroot}%{_libdir}/ncurses6/*.so
@@ -564,7 +564,7 @@ export BUILD_TIC=$PWD/../progs/tic
 	grep -v -F -x -f default.list \
 	> extension.list
     rm -f %{buildroot}%{_prefix}/lib/terminfo
-%if %abi < 6
+%if "%abi" < "6"
 
 %post   -n libncurses -p /sbin/ldconfig
 
@@ -600,7 +600,7 @@ export BUILD_TIC=$PWD/../progs/tic
 %doc %{_mandir}/man1/tput.1.gz
 %doc %{_mandir}/man1/tset.1.gz
 %doc %{_mandir}/man5/*.gz
-%if %abi == 5
+%if "%abi" == "5"
 
 %files -n libncurses
 %manifest %{name}.manifest
