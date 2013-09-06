@@ -1,0 +1,9 @@
+Code-Review+2: Patrick McCarty <patrick.mccarty@linux.intel.com>
+Code-Review+2: Anas Nashif <anas.nashif@intel.com>
+Verified+1: Anas Nashif <anas.nashif@intel.com>
+Code-Review+1: Junchun Guan <junchunx.guan@intel.com>
+Submitted-by: Anas Nashif <anas.nashif@intel.com>
+Submitted-at: Fri, 06 Sep 2013 04:38:59 -0700
+Reviewed-on: https://review.tizen.org/gerrit/9668
+Project: platform/upstream/ncurses
+Branch: refs/heads/tizen
