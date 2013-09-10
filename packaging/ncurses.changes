@@ -1,3 +1,6 @@
+* Tue Sep 10 2013 Jacek Bukarewicz <j.bukarewicz@samsung.com> submit/tizen/20130719.024302@c4b2a54
+- Moved documentation to a separate package
+
 * Fri Jun 14 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130509.182512@cb86ca0
 - Install pc files and move everything to /usr/lib
 

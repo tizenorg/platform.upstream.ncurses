@@ -562,13 +562,6 @@ export BUILD_TIC=$PWD/../progs/tic
 %{_bindir}/toe
 %{_bindir}/tput
 %{_bindir}/tset
-%doc %{_mandir}/man1/clear.1.gz
-%doc %{_mandir}/man1/reset.1.gz
-%doc %{_mandir}/man1/tabs.1.gz
-%doc %{_mandir}/man1/toe.1.gz
-%doc %{_mandir}/man1/tput.1.gz
-%doc %{_mandir}/man1/tset.1.gz
-%doc %{_mandir}/man5/*.gz
 
 %files -n libncurses
 %manifest %{name}.manifest
@@ -583,8 +576,6 @@ export BUILD_TIC=$PWD/../progs/tic
 %files -n ncurses-devel
 %manifest %{name}.manifest
 %defattr(-,root,root)
-%dir %{_defaultdocdir}/ncurses/
-%doc %{_defaultdocdir}/ncurses/*
 %{_bindir}/ncurses*-config
 %{_bindir}/captoinfo
 %{_bindir}/infocmp
@@ -604,17 +595,13 @@ export BUILD_TIC=$PWD/../progs/tic
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/ncurses6/lib*.a
 %{_libdir}/ncurses6/lib*.so
-%doc %{_mandir}/man1/*-config.1.gz
-%doc %{_mandir}/man1/captoinfo.1.gz
-%doc %{_mandir}/man1/infocmp.1.gz
-%doc %{_mandir}/man1/infotocap.1.gz
-%doc %{_mandir}/man1/tic.1.gz
-%doc %{_mandir}/man3/*.gz
-%doc %{_mandir}/man7/*.gz
-
 
 %files -f extension.list -n terminfo
 %manifest %{name}.manifest
 %defattr(-,root,root)
+
+%docs_package
+%dir %{_defaultdocdir}/ncurses/
+%doc %{_defaultdocdir}/ncurses/*
 
 %changelog
