@@ -388,7 +388,7 @@ export BUILD_TIC=$PWD/../progs/tic
 	#    test   -e "${lib}" || continue
 	#    mv "${lib}" %{buildroot}/%{_lib}/ || continue
 	#done
-	for lib in %{buildroot}/%{_libdir}/${model}.so.%{abi} ; do
+	for lib in %{buildroot}/%{_libdir}/${model}.so.5 ; do
 	    test -e "${lib}" || continue
 	    test -L "${lib}" || continue
 	    lib=${lib#%{buildroot}}
@@ -403,11 +403,6 @@ export BUILD_TIC=$PWD/../progs/tic
 	    esac
 	done
     done
-%if 0
-    lnk=%{buildroot}%{_libdir}/libtermcap.so
-    echo '/* GNU ld script */'		>  ${lnk}
-    echo "INPUT(AS_NEEDED(-ltinfo))"	>> ${lnk}
-%endif
     chmod 0755 %{buildroot}/%{_libdir}/lib*.so.*
     chmod 0755 %{buildroot}/%{_libdir}/lib*.so.*
     chmod a-x  %{buildroot}/%{_libdir}/lib*.a
