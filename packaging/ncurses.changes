@@ -1,3 +1,6 @@
+* Mon Sep 16 2013 Anas Nashif <anas.nashif@intel.com> accepted/tizen/20130912.195247@fc238d7
+- remove remaining undefined macro for abi
+
 * Tue Sep 10 2013 Jacek Bukarewicz <j.bukarewicz@samsung.com> submit/tizen/20130719.024302@c4b2a54
 - Moved documentation to a separate package
 
