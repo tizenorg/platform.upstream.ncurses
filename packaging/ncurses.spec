@@ -379,7 +379,7 @@ export BUILD_TIC=$PWD/../progs/tic
 %install
     GZIP="-9"
     export GZIP
-    (cd %{root}/; tar -cpsSf - *)|tar -xpsSf - -C %{buildroot}/
+    (cd %{root}/; tar -cpSf - *)|tar -xpsSf - -C %{buildroot}/
     rm -rf %{root}
     #mkdir -p %{buildroot}/%{_lib}
     for model in libncurses libncursest libncursesw libncursestw libtinfo
