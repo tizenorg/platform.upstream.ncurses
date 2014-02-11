@@ -1,3 +1,7 @@
+* Tue Feb 11 2014 Patrick McCarty <patrick.mccarty@linux.intel.com> 86dca7a
+- Fix ncurses build with tar 1.27: the -s option (equivalent to --same-order)
+  can no longer be used with the -c option.
+
 * Mon Sep 16 2013 Anas Nashif <anas.nashif@intel.com> accepted/tizen/20130912.195247@fc238d7
 - remove remaining undefined macro for abi
 
