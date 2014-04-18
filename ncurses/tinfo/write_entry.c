@@ -434,7 +434,7 @@ _nc_write_entry(TERMTYPE *const tp)
 	    if (first_name[0] == linkname[0])
 		strncpy(symlinkname, first_name, sizeof(symlinkname) - 1);
 	    else {
-		_nc_STRCPY(symlinkname, "../", sizeof(suymlinkname));
+		_nc_STRCPY(symlinkname, "../", sizeof(symlinkname));
 		strncat(symlinkname, filename, sizeof(symlinkname) - 4);
 	    }
 	    symlinkname[sizeof(symlinkname) - 1] = '\0';
