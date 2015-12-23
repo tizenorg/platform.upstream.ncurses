@@ -551,6 +551,7 @@ export BUILD_TIC=$PWD/../progs/tic
 %files -n ncurses-utils
 %manifest %{name}.manifest
 %defattr(-,root,root)
+%license COPYING
 %{_bindir}/clear
 %{_bindir}/reset
 %{_bindir}/tabs
