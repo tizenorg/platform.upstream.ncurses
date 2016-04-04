@@ -226,6 +226,8 @@ export CFLAGS+=" -fvisibility=hidden"
     # advantage about splitting of a libtinfo (IMHO).
     #
     touch --reference=README config.sub config.guess
+export CFLAGS+=" -fvisibility=hidden"
+  export CXXFLAGS+=" -fvisibility=hidden"
     %configure \
 	--without-ada		\
 	--without-debug		\
