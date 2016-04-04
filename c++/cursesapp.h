@@ -38,7 +38,7 @@
 
 #include <cursslk.h>
 
-class NCURSES_IMPEXP NCursesApplication {
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesApplication {
 public:
   typedef struct _slk_link {          // This structure is used to maintain
     struct _slk_link* prev;           // a stack of SLKs

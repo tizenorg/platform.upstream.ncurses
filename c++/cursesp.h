@@ -42,7 +42,7 @@ extern "C" {
 #  include <panel.h>
 }
 
-class NCURSES_IMPEXP NCursesPanel
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesPanel
   : public NCursesWindow
 {
 protected:
@@ -225,7 +225,7 @@ public:
  * user data with a panel. A NCursesUserPanel<T> is a panel
  * associated with some user data of type T.
  */
-template<class T> class NCursesUserPanel : public NCursesPanel
+template<class T> class __attribute__ ((visibility ("default"))) NCursesUserPanel : public NCursesPanel
 {
 public:
   NCursesUserPanel (int nlines,

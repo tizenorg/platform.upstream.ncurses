@@ -115,8 +115,8 @@ ENTRY;
 #define ExtNumname(tp,i,names)  EXT_NAMES(tp, i, NUMCOUNT, (i - (tp->num_Numbers - tp->ext_Numbers)) + tp->ext_Booleans, names)
 #define ExtStrname(tp,i,names)  EXT_NAMES(tp, i, STRCOUNT, (i - (tp->num_Strings - tp->ext_Strings)) + (tp->ext_Numbers + tp->ext_Booleans), names)
 
-extern NCURSES_EXPORT_VAR(ENTRY *) _nc_head;
-extern NCURSES_EXPORT_VAR(ENTRY *) _nc_tail;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(ENTRY *) _nc_head;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(ENTRY *) _nc_tail;
 #define for_entry_list(qp)	for (qp = _nc_head; qp; qp = qp->next)
 
 #define MAX_LINE	132
@@ -142,48 +142,48 @@ extern NCURSES_EXPORT_VAR(ENTRY *) _nc_tail;
 		}
 
 /* alloc_entry.c: elementary allocation code */
-extern NCURSES_EXPORT(ENTRY *) _nc_copy_entry (ENTRY *oldp);
-extern NCURSES_EXPORT(char *) _nc_save_str (const char *const);
-extern NCURSES_EXPORT(void) _nc_init_entry (TERMTYPE *const);
-extern NCURSES_EXPORT(void) _nc_merge_entry (TERMTYPE *const, TERMTYPE *const);
-extern NCURSES_EXPORT(void) _nc_wrap_entry (ENTRY *const, bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(ENTRY *) _nc_copy_entry (ENTRY *oldp);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(char *) _nc_save_str (const char *const);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_init_entry (TERMTYPE *const);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_merge_entry (TERMTYPE *const, TERMTYPE *const);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_wrap_entry (ENTRY *const, bool);
 
 /* alloc_ttype.c: elementary allocation code */
-extern NCURSES_EXPORT(void) _nc_align_termtype (TERMTYPE *, TERMTYPE *);
-extern NCURSES_EXPORT(void) _nc_copy_termtype (TERMTYPE *, const TERMTYPE *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_align_termtype (TERMTYPE *, TERMTYPE *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_copy_termtype (TERMTYPE *, const TERMTYPE *);
 
 /* free_ttype.c: elementary allocation code */
-extern NCURSES_EXPORT(void) _nc_free_termtype (TERMTYPE *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_free_termtype (TERMTYPE *);
 
 /* lib_acs.c */
-extern NCURSES_EXPORT(void) _nc_init_acs (void);	/* corresponds to traditional 'init_acs()' */
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_init_acs (void);	/* corresponds to traditional 'init_acs()' */
 
 /* lib_termcap.c: trim sgr0 string for termcap users */
-extern NCURSES_EXPORT(char *) _nc_trim_sgr0 (TERMTYPE *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(char *) _nc_trim_sgr0 (TERMTYPE *);
 
 /* parse_entry.c: entry-parsing code */
 #if NCURSES_XNAMES
-extern NCURSES_EXPORT_VAR(bool) _nc_user_definable;
-extern NCURSES_EXPORT_VAR(bool) _nc_disable_period;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(bool) _nc_user_definable;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(bool) _nc_disable_period;
 #endif
-extern NCURSES_EXPORT(int) _nc_parse_entry (ENTRY *, int, bool);
-extern NCURSES_EXPORT(int) _nc_capcmp (const char *, const char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int) _nc_parse_entry (ENTRY *, int, bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int) _nc_capcmp (const char *, const char *);
 
 /* write_entry.c: writing an entry to the file system */
-extern NCURSES_EXPORT(void) _nc_set_writedir (char *);
-extern NCURSES_EXPORT(void) _nc_write_entry (TERMTYPE *const);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_set_writedir (char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_write_entry (TERMTYPE *const);
 
 /* comp_parse.c: entry list handling */
-extern NCURSES_EXPORT(void) _nc_read_entry_source (FILE*, char*, int, bool, bool (*)(ENTRY*));
-extern NCURSES_EXPORT(bool) _nc_entry_match (char *, char *);
-extern NCURSES_EXPORT(int) _nc_resolve_uses (bool); /* obs 20040705 */
-extern NCURSES_EXPORT(int) _nc_resolve_uses2 (bool, bool);
-extern NCURSES_EXPORT(void) _nc_free_entries (ENTRY *);
-extern NCURSES_IMPEXP void NCURSES_API (*_nc_check_termtype)(TERMTYPE *); /* obs 20040705 */
-extern NCURSES_IMPEXP void NCURSES_API (*_nc_check_termtype2)(TERMTYPE *, bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_read_entry_source (FILE*, char*, int, bool, bool (*)(ENTRY*));
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(bool) _nc_entry_match (char *, char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int) _nc_resolve_uses (bool); /* obs 20040705 */
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int) _nc_resolve_uses2 (bool, bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_free_entries (ENTRY *);
+__attribute__ ((visibility ("default"))) extern NCURSES_IMPEXP void NCURSES_API (*_nc_check_termtype)(TERMTYPE *); /* obs 20040705 */
+__attribute__ ((visibility ("default"))) extern NCURSES_IMPEXP void NCURSES_API (*_nc_check_termtype2)(TERMTYPE *, bool);
 
 /* trace_xnames.c */
-extern NCURSES_EXPORT(void) _nc_trace_xnames (TERMTYPE *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_trace_xnames (TERMTYPE *);
 
 #ifdef __cplusplus
 }

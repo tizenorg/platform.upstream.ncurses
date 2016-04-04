@@ -141,6 +141,9 @@ rm -vf tar-copy.sh
 rm -vf mk-dlls.sh
 
 %build
+export CFLAGS+=" -fvisibility=hidden"
+  export CXXFLAGS+=" -fvisibility=hidden"
+  
     cflags ()
     {
 	local flag=$1; shift

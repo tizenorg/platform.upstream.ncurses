@@ -287,132 +287,132 @@ typedef void (*Form_Hook)(FORM *);
 	/*************************
 	*  standard field types  *
 	*************************/
-extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_ALPHA;
-extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_ALNUM;
-extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_ENUM;
-extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_INTEGER;
-extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_NUMERIC;
-extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_REGEXP;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_ALPHA;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_ALNUM;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_ENUM;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_INTEGER;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_NUMERIC;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_REGEXP;
 
 	/************************************
 	*  built-in additional field types  *
 	*  They are not defined in SVr4     *
 	************************************/
-extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_IPV4;      /* Internet IP Version 4 address */
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(FIELDTYPE *) TYPE_IPV4;      /* Internet IP Version 4 address */
 
 	/***********************
 	*  FIELDTYPE routines  *
 	***********************/
-extern NCURSES_EXPORT(FIELDTYPE *) new_fieldtype (
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELDTYPE *) new_fieldtype (
 		    bool (* const field_check)(FIELD *,const void *),
 		    bool (* const char_check)(int,const void *));
-extern NCURSES_EXPORT(FIELDTYPE *) link_fieldtype(
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELDTYPE *) link_fieldtype(
 		    FIELDTYPE *, FIELDTYPE *);
 
-extern NCURSES_EXPORT(int)	free_fieldtype (FIELDTYPE *);
-extern NCURSES_EXPORT(int)	set_fieldtype_arg (FIELDTYPE *,
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	free_fieldtype (FIELDTYPE *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_fieldtype_arg (FIELDTYPE *,
 		    void * (* const make_arg)(va_list *),
 		    void * (* const copy_arg)(const void *),
 		    void (* const free_arg)(void *));
-extern NCURSES_EXPORT(int)	 set_fieldtype_choice (FIELDTYPE *,
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	 set_fieldtype_choice (FIELDTYPE *,
 		    bool (* const next_choice)(FIELD *,const void *),
 	      	    bool (* const prev_choice)(FIELD *,const void *));
 
 	/*******************
 	*  FIELD routines  *
 	*******************/
-extern NCURSES_EXPORT(FIELD *)	new_field (int,int,int,int,int,int);
-extern NCURSES_EXPORT(FIELD *)	dup_field (FIELD *,int,int);
-extern NCURSES_EXPORT(FIELD *)	link_field (FIELD *,int,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELD *)	new_field (int,int,int,int,int,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELD *)	dup_field (FIELD *,int,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELD *)	link_field (FIELD *,int,int);
 
-extern NCURSES_EXPORT(int)	free_field (FIELD *);
-extern NCURSES_EXPORT(int)	field_info (const FIELD *,int *,int *,int *,int *,int *,int *);
-extern NCURSES_EXPORT(int)	dynamic_field_info (const FIELD *,int *,int *,int *);
-extern NCURSES_EXPORT(int)	set_max_field ( FIELD *,int);
-extern NCURSES_EXPORT(int)	move_field (FIELD *,int,int);
-extern NCURSES_EXPORT(int)	set_field_type (FIELD *,FIELDTYPE *,...);
-extern NCURSES_EXPORT(int)	set_new_page (FIELD *,bool);
-extern NCURSES_EXPORT(int)	set_field_just (FIELD *,int);
-extern NCURSES_EXPORT(int)	field_just (const FIELD *);
-extern NCURSES_EXPORT(int)	set_field_fore (FIELD *,chtype);
-extern NCURSES_EXPORT(int)	set_field_back (FIELD *,chtype);
-extern NCURSES_EXPORT(int)	set_field_pad (FIELD *,int);
-extern NCURSES_EXPORT(int)	field_pad (const FIELD *);
-extern NCURSES_EXPORT(int)	set_field_buffer (FIELD *,int,const char *);
-extern NCURSES_EXPORT(int)	set_field_status (FIELD *,bool);
-extern NCURSES_EXPORT(int)	set_field_userptr (FIELD *, void *);
-extern NCURSES_EXPORT(int)	set_field_opts (FIELD *,Field_Options);
-extern NCURSES_EXPORT(int)	field_opts_on (FIELD *,Field_Options);
-extern NCURSES_EXPORT(int)	field_opts_off (FIELD *,Field_Options);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	free_field (FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	field_info (const FIELD *,int *,int *,int *,int *,int *,int *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	dynamic_field_info (const FIELD *,int *,int *,int *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_max_field ( FIELD *,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	move_field (FIELD *,int,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_type (FIELD *,FIELDTYPE *,...);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_new_page (FIELD *,bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_just (FIELD *,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	field_just (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_fore (FIELD *,chtype);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_back (FIELD *,chtype);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_pad (FIELD *,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	field_pad (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_buffer (FIELD *,int,const char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_status (FIELD *,bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_userptr (FIELD *, void *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_opts (FIELD *,Field_Options);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	field_opts_on (FIELD *,Field_Options);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	field_opts_off (FIELD *,Field_Options);
 
-extern NCURSES_EXPORT(chtype)	field_fore (const FIELD *);
-extern NCURSES_EXPORT(chtype)	field_back (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(chtype)	field_fore (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(chtype)	field_back (const FIELD *);
 
-extern NCURSES_EXPORT(bool)	new_page (const FIELD *);
-extern NCURSES_EXPORT(bool)	field_status (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(bool)	new_page (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(bool)	field_status (const FIELD *);
 
-extern NCURSES_EXPORT(void *)	field_arg (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void *)	field_arg (const FIELD *);
 
-extern NCURSES_EXPORT(void *)	field_userptr (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void *)	field_userptr (const FIELD *);
 
-extern NCURSES_EXPORT(FIELDTYPE *)	field_type (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELDTYPE *)	field_type (const FIELD *);
 
-extern NCURSES_EXPORT(char *)	field_buffer (const FIELD *,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(char *)	field_buffer (const FIELD *,int);
 
-extern NCURSES_EXPORT(Field_Options)	field_opts (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(Field_Options)	field_opts (const FIELD *);
 
 	/******************
 	*  FORM routines  *
 	******************/
 
-extern NCURSES_EXPORT(FORM *)	new_form (FIELD **);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FORM *)	new_form (FIELD **);
 
-extern NCURSES_EXPORT(FIELD **)	form_fields (const FORM *);
-extern NCURSES_EXPORT(FIELD *)	current_field (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELD **)	form_fields (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FIELD *)	current_field (const FORM *);
 
-extern NCURSES_EXPORT(WINDOW *)	form_win (const FORM *);
-extern NCURSES_EXPORT(WINDOW *)	form_sub (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(WINDOW *)	form_win (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(WINDOW *)	form_sub (const FORM *);
 
-extern NCURSES_EXPORT(Form_Hook)	form_init (const FORM *);
-extern NCURSES_EXPORT(Form_Hook)	form_term (const FORM *);
-extern NCURSES_EXPORT(Form_Hook)	field_init (const FORM *);
-extern NCURSES_EXPORT(Form_Hook)	field_term (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(Form_Hook)	form_init (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(Form_Hook)	form_term (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(Form_Hook)	field_init (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(Form_Hook)	field_term (const FORM *);
 
-extern NCURSES_EXPORT(int)	free_form (FORM *);
-extern NCURSES_EXPORT(int)	set_form_fields (FORM *,FIELD **);
-extern NCURSES_EXPORT(int)	field_count (const FORM *);
-extern NCURSES_EXPORT(int)	set_form_win (FORM *,WINDOW *);
-extern NCURSES_EXPORT(int)	set_form_sub (FORM *,WINDOW *);
-extern NCURSES_EXPORT(int)	set_current_field (FORM *,FIELD *);
-extern NCURSES_EXPORT(int)	field_index (const FIELD *);
-extern NCURSES_EXPORT(int)	set_form_page (FORM *,int);
-extern NCURSES_EXPORT(int)	form_page (const FORM *);
-extern NCURSES_EXPORT(int)	scale_form (const FORM *,int *,int *);
-extern NCURSES_EXPORT(int)	set_form_init (FORM *,Form_Hook);
-extern NCURSES_EXPORT(int)	set_form_term (FORM *,Form_Hook);
-extern NCURSES_EXPORT(int)	set_field_init (FORM *,Form_Hook);
-extern NCURSES_EXPORT(int)	set_field_term (FORM *,Form_Hook);
-extern NCURSES_EXPORT(int)	post_form (FORM *);
-extern NCURSES_EXPORT(int)	unpost_form (FORM *);
-extern NCURSES_EXPORT(int)	pos_form_cursor (FORM *);
-extern NCURSES_EXPORT(int)	form_driver (FORM *,int);
-extern NCURSES_EXPORT(int)	set_form_userptr (FORM *,void *);
-extern NCURSES_EXPORT(int)	set_form_opts (FORM *,Form_Options);
-extern NCURSES_EXPORT(int)	form_opts_on (FORM *,Form_Options);
-extern NCURSES_EXPORT(int)	form_opts_off (FORM *,Form_Options);
-extern NCURSES_EXPORT(int)	form_request_by_name (const char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	free_form (FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_fields (FORM *,FIELD **);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	field_count (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_win (FORM *,WINDOW *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_sub (FORM *,WINDOW *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_current_field (FORM *,FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	field_index (const FIELD *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_page (FORM *,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	form_page (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	scale_form (const FORM *,int *,int *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_init (FORM *,Form_Hook);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_term (FORM *,Form_Hook);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_init (FORM *,Form_Hook);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_field_term (FORM *,Form_Hook);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	post_form (FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	unpost_form (FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	pos_form_cursor (FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	form_driver (FORM *,int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_userptr (FORM *,void *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	set_form_opts (FORM *,Form_Options);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	form_opts_on (FORM *,Form_Options);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	form_opts_off (FORM *,Form_Options);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)	form_request_by_name (const char *);
 
-extern NCURSES_EXPORT(const char *)	form_request_name (int);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const char *)	form_request_name (int);
 
-extern NCURSES_EXPORT(void *)	form_userptr (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void *)	form_userptr (const FORM *);
 
-extern NCURSES_EXPORT(Form_Options)	form_opts (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(Form_Options)	form_opts (const FORM *);
 
-extern NCURSES_EXPORT(bool)	data_ahead (const FORM *);
-extern NCURSES_EXPORT(bool)	data_behind (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(bool)	data_ahead (const FORM *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(bool)	data_behind (const FORM *);
 
 #if NCURSES_SP_FUNCS
-extern NCURSES_EXPORT(FORM *)	NCURSES_SP_NAME(new_form) (SCREEN*, FIELD **);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(FORM *)	NCURSES_SP_NAME(new_form) (SCREEN*, FIELD **);
 #endif
 
 #ifdef __cplusplus

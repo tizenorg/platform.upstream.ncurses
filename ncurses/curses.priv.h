@@ -1672,7 +1672,7 @@ extern NCURSES_EXPORT(const char *) _nc_viscbuf (const NCURSES_CH_T *, int);
 #define TGETENT_NO   0		/* entry is not found */
 #define TGETENT_ERR -1		/* an error occurred */
 
-extern NCURSES_EXPORT(const char *) _nc_visbuf2 (int, const char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const char *) _nc_visbuf2 (int, const char *);
 extern NCURSES_EXPORT(const char *) _nc_visbufn (const char *, int);
 
 #define EMPTY_MODULE(name) \
@@ -1831,7 +1831,7 @@ extern NCURSES_EXPORT(void) _nc_linedump (void);
 #endif
 
 /* lib_acs.c */
-extern NCURSES_EXPORT(void) _nc_init_acs (void); /* corresponds to traditional 'init_acs()' */
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_init_acs (void); /* corresponds to traditional 'init_acs()' */
 extern NCURSES_EXPORT(int)  _nc_msec_cost (const char *const, int);  /* used by 'tack' program */
 
 /* lib_addch.c */
@@ -1867,7 +1867,7 @@ extern NCURSES_EXPORT(void) _nc_screen_resume (void);
 extern NCURSES_EXPORT(void) _nc_screen_wrap (void);
 
 /* lib_mouse.c */
-extern NCURSES_EXPORT(bool) _nc_has_mouse (SCREEN *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(bool) _nc_has_mouse (SCREEN *);
 
 /* lib_mvcur.c */
 #define INFINITY	1000000	/* cost: too high to use */
@@ -1881,7 +1881,7 @@ extern NCURSES_EXPORT(int)    _nc_setupterm(NCURSES_CONST char *, int, int *, in
 extern NCURSES_EXPORT(void)   _nc_tinfo_cmdch(TERMINAL *, int);
 
 /* lib_set_term.c */
-extern NCURSES_EXPORT(int)    _nc_ripoffline(int, int(*)(WINDOW*, int));
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int)    _nc_ripoffline(int, int(*)(WINDOW*, int));
 
 /* lib_setup.c */
 #define ret_error(code, fmt, arg)	if (errret) {\
@@ -2120,8 +2120,8 @@ extern NCURSES_EXPORT(int) _nc_format_slks (NCURSES_SP_DCLx int _c);
 #define MSG_NO_MEMORY "Out of memory"
 #define MSG_NO_INPUTS "Premature EOF"
 
-extern NCURSES_EXPORT(int) _nc_set_tty_mode(TTY *);
-extern NCURSES_EXPORT(int) _nc_get_tty_mode(TTY *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int) _nc_set_tty_mode(TTY *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(int) _nc_get_tty_mode(TTY *);
 
 /* timed_wait flag definitions */
 #define TW_NONE    0

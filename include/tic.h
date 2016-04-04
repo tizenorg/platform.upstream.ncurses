@@ -127,10 +127,10 @@ extern "C" {
 #define DEBUG(n, a)	/*nothing*/
 #endif
 
-extern NCURSES_EXPORT_VAR(unsigned) _nc_tracing;
-extern NCURSES_EXPORT(void) _nc_tracef (char *, ...) GCC_PRINTFLIKE(1,2);
-extern NCURSES_EXPORT(const char *) _nc_visbuf (const char *);
-extern NCURSES_EXPORT(const char *) _nc_visbuf2 (int, const char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(unsigned) _nc_tracing;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(void) _nc_tracef (char *, ...) GCC_PRINTFLIKE(1,2);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const char *) _nc_visbuf (const char *);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const char *) _nc_visbuf2 (int, const char *);
 
 /*
  * These are the types of tokens returned by the scanner.  The first
@@ -161,7 +161,7 @@ struct token
 	char	*tk_valstring;	/* value of capability (if a string) */
 };
 
-extern NCURSES_EXPORT_VAR(struct token)	_nc_curr_token;
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(struct token)	_nc_curr_token;
 
 	/*
 	 * Offsets to string capabilities, with the corresponding functionkey
@@ -179,7 +179,7 @@ extern NCURSES_EXPORT(const struct tinfo_fkeys *) _nc_tinfo_fkeysf (void);
 
 #else
 
-extern NCURSES_EXPORT_VAR(const struct tinfo_fkeys) _nc_tinfo_fkeys[];
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT_VAR(const struct tinfo_fkeys) _nc_tinfo_fkeys[];
 
 #endif
 
@@ -217,10 +217,10 @@ struct alias
 	const char	*source;
 };
 
-extern NCURSES_EXPORT(const struct name_table_entry *) _nc_get_table (bool);
-extern NCURSES_EXPORT(const HashData *) _nc_get_hash_info (bool);
-extern NCURSES_EXPORT(const HashValue *) _nc_get_hash_table (bool);
-extern NCURSES_EXPORT(const struct alias *) _nc_get_alias_table (bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const struct name_table_entry *) _nc_get_table (bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const HashData *) _nc_get_hash_info (bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const HashValue *) _nc_get_hash_table (bool);
+__attribute__ ((visibility ("default"))) extern NCURSES_EXPORT(const struct alias *) _nc_get_alias_table (bool);
 
 #define NOTFOUND	((struct name_table_entry *) 0)
 

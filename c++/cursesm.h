@@ -46,7 +46,7 @@ extern "C" {
 // This wraps the ITEM type of <menu.h>
 // -------------------------------------------------------------------------
 //
-class NCURSES_IMPEXP NCursesMenuItem
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesMenuItem
 {
   friend class NCursesMenu;
 
@@ -152,7 +152,7 @@ typedef bool ITEMCALLBACK(NCursesMenuItem&);
 // If you don't like to create a child class for individual items to
 // overload action(), you may use this class and provide a callback
 // function pointer for items.
-class NCURSES_IMPEXP NCursesMenuCallbackItem : public NCursesMenuItem
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesMenuCallbackItem : public NCursesMenuItem
 {
 private:
   ITEMCALLBACK* p_fct;
@@ -188,10 +188,10 @@ public:
   // virtual member functions (see below On_..._Init and On_..._Termination)
   // to provide this functionality in an object oriented manner.
 extern "C" {
-  void _nc_xx_mnu_init(MENU *);
-  void _nc_xx_mnu_term(MENU *);
-  void _nc_xx_itm_init(MENU *);
-  void _nc_xx_itm_term(MENU *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_mnu_init(MENU *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_mnu_term(MENU *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_itm_init(MENU *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_itm_term(MENU *);
 }
 
 //
@@ -199,7 +199,7 @@ extern "C" {
 // This wraps the MENU type of <menu.h>
 // -------------------------------------------------------------------------
 //
-class NCURSES_IMPEXP NCursesMenu : public NCursesPanel
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesMenu : public NCursesPanel
 {
 protected:
   MENU *menu;
@@ -227,10 +227,10 @@ private:
     return const_cast<NCursesMenu*>(hook->m_back);
   }
 
-  friend void _nc_xx_mnu_init(MENU *);
-  friend void _nc_xx_mnu_term(MENU *);
-  friend void _nc_xx_itm_init(MENU *);
-  friend void _nc_xx_itm_term(MENU *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_mnu_init(MENU *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_mnu_term(MENU *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_itm_init(MENU *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_itm_term(MENU *);
 
   // Calculate ITEM* array for the menu
   ITEM** mapItems(NCursesMenuItem* nitems[]);
@@ -595,7 +595,7 @@ public:
 // to create a UserItem.
 // -------------------------------------------------------------------------
 //
-template<class T> class NCURSES_IMPEXP NCursesUserItem : public NCursesMenuItem
+template<class T> class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesUserItem : public NCursesMenuItem
 {
 public:
   NCursesUserItem (const char* p_name,
@@ -622,7 +622,7 @@ public:
 // The same mechanism is used to attach user data to a menu
 // -------------------------------------------------------------------------
 //
-template<class T> class NCURSES_IMPEXP NCursesUserMenu : public NCursesMenu
+template<class T> class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesUserMenu : public NCursesMenu
 {
 protected:
   NCursesUserMenu( int  nlines,

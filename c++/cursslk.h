@@ -38,7 +38,7 @@
 
 #include <cursesw.h>
 
-class NCURSES_IMPEXP Soft_Label_Key_Set {
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) Soft_Label_Key_Set {
 public:
   // This inner class represents the attributes of a Soft Label Key (SLK)
   class NCURSES_IMPEXP Soft_Label_Key {

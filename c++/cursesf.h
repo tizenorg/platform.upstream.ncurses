@@ -54,7 +54,7 @@ class NCURSES_IMPEXP NCursesFormField; // forward declaration
 
 // Class to represent builtin field types as well as C++ written new
 // fieldtypes (see classes UserDefineFieldType...
-class NCURSES_IMPEXP NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesFieldType
 {
   friend class NCursesFormField;
 
@@ -100,7 +100,7 @@ public:
 // The class representing a forms field, wrapping the lowlevel FIELD struct
 // -------------------------------------------------------------------------
 //
-class NCURSES_IMPEXP NCursesFormField
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesFormField
 {
   friend class NCursesForm;
 
@@ -326,10 +326,10 @@ public:
   // virtual member functions (see below On_..._Init and On_..._Termination)
   // to provide this functionality in an object oriented manner.
 extern "C" {
-  void _nc_xx_frm_init(FORM *);
-  void _nc_xx_frm_term(FORM *);
-  void _nc_xx_fld_init(FORM *);
-  void _nc_xx_fld_term(FORM *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_frm_init(FORM *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_frm_term(FORM *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_fld_init(FORM *);
+  __attribute__ ((visibility ("default"))) void _nc_xx_fld_term(FORM *);
 }
 
 //
@@ -337,7 +337,7 @@ extern "C" {
 // The class representing a form, wrapping the lowlevel FORM struct
 // -------------------------------------------------------------------------
 //
-class NCURSES_IMPEXP NCursesForm : public NCursesPanel
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesForm : public NCursesPanel
 {
 protected:
   FORM* form;  // the lowlevel structure
@@ -365,10 +365,10 @@ private:
     return const_cast<NCursesForm*>(hook->m_back);
   }
 
-  friend void _nc_xx_frm_init(FORM *);
-  friend void _nc_xx_frm_term(FORM *);
-  friend void _nc_xx_fld_init(FORM *);
-  friend void _nc_xx_fld_term(FORM *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_frm_init(FORM *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_frm_term(FORM *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_fld_init(FORM *);
+  __attribute__ ((visibility ("default"))) friend void _nc_xx_fld_term(FORM *);
 
   // Calculate FIELD* array for the menu
   FIELD** mapFields(NCursesFormField* nfields[]);
@@ -628,7 +628,7 @@ public:
 // data belongs to some class T. Use T as template argument
 // to create a UserField.
 // -------------------------------------------------------------------------
-template<class T> class NCURSES_IMPEXP NCursesUserField : public NCursesFormField
+template<class T> class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesUserField : public NCursesFormField
 {
 public:
   NCursesUserField (int rows,
@@ -661,7 +661,7 @@ public:
 // The same mechanism is used to attach user data to a form
 // -------------------------------------------------------------------------
 //
-template<class T> class NCURSES_IMPEXP NCursesUserForm : public NCursesForm
+template<class T> class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) NCursesUserForm : public NCursesForm
 {
 protected:
   // 'Internal' constructor, builds an object without association to a
@@ -718,7 +718,7 @@ public:
 // Builtin Fieldtypes
 // -------------------------------------------------------------------------
 //
-class NCURSES_IMPEXP Alpha_Field : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) Alpha_Field : public NCursesFieldType
 {
 private:
   int min_field_width;
@@ -734,7 +734,7 @@ public:
   }
 };
 
-class NCURSES_IMPEXP Alphanumeric_Field : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) Alphanumeric_Field : public NCursesFieldType
 {
 private:
   int min_field_width;
@@ -750,7 +750,7 @@ public:
   }
 };
 
-class NCURSES_IMPEXP Integer_Field : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) Integer_Field : public NCursesFieldType
 {
 private:
   int precision;
@@ -768,7 +768,7 @@ public:
   }
 };
 
-class NCURSES_IMPEXP Numeric_Field : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) Numeric_Field : public NCursesFieldType
 {
 private:
   int precision;
@@ -786,7 +786,7 @@ public:
   }
 };
 
-class NCURSES_IMPEXP Regular_Expression_Field : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) Regular_Expression_Field : public NCursesFieldType
 {
 private:
   char* regex;
@@ -831,7 +831,7 @@ public:
   }
 };
 
-class NCURSES_IMPEXP Enumeration_Field : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) Enumeration_Field : public NCursesFieldType
 {
 private:
   const char** list;
@@ -870,7 +870,7 @@ public:
   }
 };
 
-class NCURSES_IMPEXP IPV4_Address_Field : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) IPV4_Address_Field : public NCursesFieldType
 {
 private:
   void set(NCursesFormField& f) {
@@ -883,9 +883,9 @@ public:
 };
 
 extern "C" {
-  bool _nc_xx_fld_fcheck(FIELD *, const void*);
-  bool _nc_xx_fld_ccheck(int c, const void *);
-  void* _nc_xx_fld_makearg(va_list*);
+  __attribute__ ((visibility ("default"))) bool _nc_xx_fld_fcheck(FIELD *, const void*);
+  __attribute__ ((visibility ("default"))) bool _nc_xx_fld_ccheck(int c, const void *);
+  __attribute__ ((visibility ("default"))) void* _nc_xx_fld_makearg(va_list*);
 }
 
 //
@@ -893,7 +893,7 @@ extern "C" {
 // Abstract base class for User-Defined Fieldtypes
 // -------------------------------------------------------------------------
 //
-class NCURSES_IMPEXP UserDefinedFieldType : public NCursesFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) UserDefinedFieldType : public NCursesFieldType
 {
   friend class UDF_Init; // Internal helper to set up statics
 private:
@@ -904,9 +904,9 @@ private:
 protected:
   // This are the functions required by the low level libforms functions
   // to construct a fieldtype.
-  friend bool _nc_xx_fld_fcheck(FIELD *, const void*);
-  friend bool _nc_xx_fld_ccheck(int c, const void *);
-  friend void* _nc_xx_fld_makearg(va_list*);
+  __attribute__ ((visibility ("default"))) friend bool _nc_xx_fld_fcheck(FIELD *, const void*);
+  __attribute__ ((visibility ("default"))) friend bool _nc_xx_fld_ccheck(int c, const void *);
+  __attribute__ ((visibility ("default"))) friend void* _nc_xx_fld_makearg(va_list*);
 
   void set(NCursesFormField& f) {
     OnError(::set_field_type(f.get_field(),fieldtype,&f));
@@ -927,8 +927,8 @@ public:
 };
 
 extern "C" {
-  bool _nc_xx_next_choice(FIELD*, const void *);
-  bool _nc_xx_prev_choice(FIELD*, const void *);
+  __attribute__ ((visibility ("default"))) bool _nc_xx_next_choice(FIELD*, const void *);
+  __attribute__ ((visibility ("default"))) bool _nc_xx_prev_choice(FIELD*, const void *);
 }
 
 //
@@ -936,7 +936,7 @@ extern "C" {
 // Abstract base class for User-Defined Fieldtypes with Choice functions
 // -------------------------------------------------------------------------
 //
-class NCURSES_IMPEXP UserDefinedFieldType_With_Choice : public UserDefinedFieldType
+class NCURSES_IMPEXP __attribute__ ((visibility ("default"))) UserDefinedFieldType_With_Choice : public UserDefinedFieldType
 {
   friend class UDF_Init; // Internal helper to set up statics
 private:
@@ -946,8 +946,8 @@ private:
 
   // This are the functions required by the low level libforms functions
   // to construct a fieldtype with choice functions.
-  friend bool _nc_xx_next_choice(FIELD*, const void *);
-  friend bool _nc_xx_prev_choice(FIELD*, const void *);
+  __attribute__ ((visibility ("default"))) friend bool _nc_xx_next_choice(FIELD*, const void *);
+  __attribute__ ((visibility ("default"))) friend bool _nc_xx_prev_choice(FIELD*, const void *);
 
 protected:
   // Redefine this function to do the retrieval of the next choice value.
